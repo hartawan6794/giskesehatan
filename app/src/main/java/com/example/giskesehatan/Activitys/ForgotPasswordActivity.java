@@ -21,8 +21,6 @@ import com.example.giskesehatan.Helpers.MyApiApplication;
 import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
-import com.example.giskesehatan.Models.RegisterModel;
-import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.Models.UserModel;
 import com.example.giskesehatan.R;
 

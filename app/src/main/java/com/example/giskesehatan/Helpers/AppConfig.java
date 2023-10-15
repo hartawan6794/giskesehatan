@@ -31,4 +31,10 @@ public class AppConfig {
         return firstLetter + restOfString;
     }
 
+    public static String keyToken(String token){
+        String key = "Bearer " + token;
+
+        return key;
+    }
+
 }

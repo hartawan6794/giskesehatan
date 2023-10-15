@@ -19,7 +19,7 @@ import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.MyApiApplication;
 import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.Models.ApiResponse;
-import com.example.giskesehatan.Models.RegisterModel;
+import com.example.giskesehatan.Models.CombineUserModel;
 import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.Models.UserModel;
 import com.example.giskesehatan.R;
@@ -130,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             UserDetailModel userDetailModel = new UserDetailModel();
                                             userDetailModel.setNamaLengkap(nm_user);
 
-                                            RegisterModel modelRegister = new RegisterModel();
+                                            CombineUserModel modelRegister = new CombineUserModel();
                                             modelRegister.setUserModel(userModel);
                                             modelRegister.setUserDetailModel(userDetailModel);
 
