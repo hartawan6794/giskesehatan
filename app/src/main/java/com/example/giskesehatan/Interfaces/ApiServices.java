@@ -3,6 +3,7 @@ package com.example.giskesehatan.Interfaces;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
 import com.example.giskesehatan.Models.RegisterModel;
+import com.example.giskesehatan.Models.SharedPreferenceModel;
 import com.example.giskesehatan.Models.UserModel;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface ApiServices {
 ////    Call<ApiResponse<List<ModelPembayaran>>> getPembayaran(@Query("id_pelanggan") String paramValue);
 //
     @POST("login")
-    Call<ApiResponse<List<UserModel>>> login(@Body LoginModel loginModel);
+    Call<ApiResponse<List<SharedPreferenceModel>>> login(@Body LoginModel loginModel);
 
     @POST("register")
     Call<ApiResponse> register(@Body RegisterModel registerModel);

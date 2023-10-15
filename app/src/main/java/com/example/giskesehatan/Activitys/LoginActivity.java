@@ -8,7 +8,10 @@ import androidx.appcompat.widget.AppCompatTextView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
@@ -19,6 +22,7 @@ import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.MainActivity;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
+import com.example.giskesehatan.Models.SharedPreferenceModel;
 import com.example.giskesehatan.Models.UserModel;
 import com.example.giskesehatan.R;
 import com.google.gson.Gson;
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private AppCompatEditText ed_email, ed_password;
     private AppCompatButton btn_login, btn_register;
     private AppCompatTextView tv_forgot;
+    private CheckBox show_pass;
     //progress dialoh
     private ProgressDialog progressDialog;
     //apiservice untuk mengirim data dari client ke serve
@@ -65,6 +70,28 @@ public class LoginActivity extends AppCompatActivity {
             String email = extras.getString("email");
             ed_email.setText(email);
         }
+
+        if(!sharedPreference.readSetting("id_user").isEmpty()){
+            Intent intent = new Intent(this,DashboardActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
+
+        show_pass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    // Tampilkan kata sandi
+                    ed_password.setTransformationMethod(null);
+                    show_pass.setText("Sembunyikan password");
+                } else {
+                    // Sembunyikan kata sandi
+                    ed_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    show_pass.setText("Tampilkan password");
+                }
+            }
+        });
 
     }
 
@@ -92,20 +119,22 @@ public class LoginActivity extends AppCompatActivity {
                 loginModel.setEmail(ed_email.getText().toString());
                 loginModel.setPassword(ed_password.getText().toString());
 
-                Call<ApiResponse<List<UserModel>>> call = apiService.login(loginModel);
-                call.enqueue(new Callback<ApiResponse<List<UserModel>>>() {
+                Call<ApiResponse<List<SharedPreferenceModel>>> call = apiService.login(loginModel);
+                call.enqueue(new Callback<ApiResponse<List<SharedPreferenceModel>>>() {
                     @Override
-                    public void onResponse(Call<ApiResponse<List<UserModel>>> call, Response<ApiResponse<List<UserModel>>> response) {
+                    public void onResponse(Call<ApiResponse<List<SharedPreferenceModel>>> call, Response<ApiResponse<List<SharedPreferenceModel>>> response) {
                         progressDialog.dismiss();
                         if (response.isSuccessful()) {
-                            ApiResponse<List<UserModel>> apiResponse = response.body();
+                            ApiResponse<List<SharedPreferenceModel>> apiResponse = response.body();
                             if (apiResponse.isStatus()) {
-                                List<UserModel> userModels = apiResponse.getResult();
-                                sharedPreference.addUpdateSettings("id_user", userModels.get(0).getIdUser());
-                                sharedPreference.addUpdateSettings("token", userModels.get(0).getBearerToken());
-                                sharedPreference.addUpdateSettings("email", userModels.get(0).getEmailUser());
-                                sharedPreference.addUpdateSettings("username", userModels.get(0).getUsername());
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                List<SharedPreferenceModel> sharedPreferenceModels = apiResponse.getResult();
+                                sharedPreference.addUpdateSettings("id_user", sharedPreferenceModels.get(0).getIdUser());
+                                sharedPreference.addUpdateSettings("token", sharedPreferenceModels.get(0).getBearerToken());
+                                sharedPreference.addUpdateSettings("email", sharedPreferenceModels.get(0).getEmailUser());
+                                sharedPreference.addUpdateSettings("username", sharedPreferenceModels.get(0).getUsername());
+                                sharedPreference.addUpdateSettings("nama_lengkap", sharedPreferenceModels.get(0).getUsername());
+                                sharedPreference.addUpdateSettings("img_url", sharedPreferenceModels.get(0).getUsername());
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                 finish();
@@ -119,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<ApiResponse<List<UserModel>>> call, Throwable t) {
+                    public void onFailure(Call<ApiResponse<List<SharedPreferenceModel>>> call, Throwable t) {
                         progressDialog.dismiss();
                         // Tangani jika permintaan gagal
                         Log.e("API", "Request failure: " + t.getMessage());
@@ -145,5 +174,6 @@ public class LoginActivity extends AppCompatActivity {
         btn_login           = findViewById(R.id.btn_login);
         btn_register        = findViewById(R.id.btn_signup);
         tv_forgot           = findViewById(R.id.tv_forgot);
+        show_pass           = findViewById(R.id.checkBoxShowPassword);
     }
 }

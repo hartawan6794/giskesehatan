@@ -9,7 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.giskesehatan.Helpers.AppConfig;
@@ -29,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
     private AppCompatEditText ed_email, ed_nm, ed_username, ed_pass, ed_conf_pass;
     private AppCompatButton btn_regis, btn_login;
+    private CheckBox show_pass;
     private ProgressDialog progressDialog;
     private ApiServices apiService;
 
@@ -45,11 +49,29 @@ public class RegisterActivity extends AppCompatActivity {
         btn_regis.setOnClickListener(view -> register());
         btn_login.setOnClickListener(view -> login());
 
+        show_pass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    // Tampilkan kata sandi
+                    ed_pass.setTransformationMethod(null);
+                    ed_conf_pass.setTransformationMethod(null);
+                    show_pass.setText("Sembunyikan password");
+                } else {
+                    // Sembunyikan kata sandi
+                    ed_pass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    ed_conf_pass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    show_pass.setText("Tampilkan password");
+                }
+            }
+        });
+
     }
 
     private void login() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        finish();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
@@ -171,6 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
         btn_login       = findViewById(R.id.btn_login);
         btn_regis       = findViewById(R.id.btn_regis);
         progressDialog  = new ProgressDialog(this);
+        show_pass       = findViewById(R.id.checkBoxShowPassword);
     }
 
     public static String getDeviceId(Context context) {
