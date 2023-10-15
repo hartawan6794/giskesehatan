@@ -2,18 +2,17 @@ package com.example.giskesehatan.Interfaces;
 
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
-import com.example.giskesehatan.Models.RegisterModel;
+import com.example.giskesehatan.Models.CombineUserModel;
 import com.example.giskesehatan.Models.SharedPreferenceModel;
+import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.Models.UserModel;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface ApiServices {
 //    @GET("regis")
@@ -35,11 +34,15 @@ public interface ApiServices {
     Call<ApiResponse<List<SharedPreferenceModel>>> login(@Body LoginModel loginModel);
 
     @POST("register")
-    Call<ApiResponse> register(@Body RegisterModel registerModel);
+    Call<ApiResponse> register(@Body CombineUserModel combineUserModel);
 
     @POST("checkemail")
     Call<ApiResponse<List<UserModel>>> checkemail(@Body LoginModel loginModel);
 
     @POST("resetpassword")
     Call<ApiResponse> resetpassword(@Body UserModel userModel);
+
+
+    @POST("user")
+    Call<ApiResponse<List<UserDetailModel>>> user(@Header("Authorization") String token, @Body UserDetailModel userModel);
 }

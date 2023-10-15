@@ -2,7 +2,7 @@ package com.example.giskesehatan.Models;
 
 import java.io.Serializable;
 
-public class RegisterModel implements Serializable {
+public class CombineUserModel implements Serializable {
     private UserModel userModel;
     private UserDetailModel userDetailModel;
 

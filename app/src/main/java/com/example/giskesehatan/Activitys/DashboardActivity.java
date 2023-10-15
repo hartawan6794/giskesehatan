@@ -38,6 +38,17 @@ public class DashboardActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
         initComponents();
+        setValueProfile();
+        tv_profile.setOnClickListener(v -> profile());
+    }
+
+    private void profile() {
+        Intent intent = new Intent(this,ProfileActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    private void setValueProfile() {
         tv_email.setText(sharedPreference.readSetting("email"));
         tv_nm_lengkap.setText(AppConfig.capitalizeFirstLetter(sharedPreference.readSetting("nama_lengkap")));
         Glide.with(this)
