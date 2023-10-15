@@ -9,7 +9,10 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.example.giskesehatan.Helpers.AnimationHelper;
@@ -45,6 +48,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private AppCompatButton btn_change;
     private LinearLayoutCompat layout_change;
 
+    //init checkbox untuk tampilkan dan sembunyikan kata sandi
+    private CheckBox show_pass;
     //progress dialoh
     private ProgressDialog progressDialog;
     //apiservice untuk mengirim data dari client ke serve
@@ -66,6 +71,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         tv_kembali.setOnClickListener(v -> kembali());
         btn_reset.setOnClickListener(v -> checkEmail());
         btn_change.setOnClickListener(v -> changePassword());
+
+        show_pass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    // Tampilkan kata sandi
+                    ed_pass.setTransformationMethod(null);
+                    ed_conf_pass.setTransformationMethod(null);
+                    show_pass.setText("Sembunyikan password");
+                } else {
+                    // Sembunyikan kata sandi
+                    ed_pass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    ed_conf_pass.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    show_pass.setText("Tampilkan password");
+                }
+            }
+        });
     }
 
     private void changePassword() {
@@ -197,14 +219,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        tv_kembali = findViewById(R.id.tv_kembali);
-        progressDialog = new ProgressDialog(this);
-        ed_email = findViewById(R.id.ed_email);
-        btn_reset = findViewById(R.id.btn_reset);
-        layout_reset = findViewById(R.id.layout_reset);
-        ed_pass = findViewById(R.id.pass);
-        ed_conf_pass = findViewById(R.id.conf_pass);
-        btn_change = findViewById(R.id.btn_change);
-        layout_change = findViewById(R.id.layout_change);
+        tv_kembali      = findViewById(R.id.tv_kembali);
+        progressDialog  = new ProgressDialog(this);
+        ed_email        = findViewById(R.id.ed_email);
+        btn_reset       = findViewById(R.id.btn_reset);
+        layout_reset    = findViewById(R.id.layout_reset);
+        ed_pass         = findViewById(R.id.pass);
+        ed_conf_pass    = findViewById(R.id.conf_pass);
+        btn_change      = findViewById(R.id.btn_change);
+        layout_change   = findViewById(R.id.layout_change);
+        show_pass       = findViewById(R.id.checkBoxShowPassword);
     }
 }

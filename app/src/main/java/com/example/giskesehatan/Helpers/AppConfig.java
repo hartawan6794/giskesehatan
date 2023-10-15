@@ -15,4 +15,20 @@ public class AppConfig {
 
         return matcher.matches();
     }
+
+    public static String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+
+        // Ambil huruf pertama dan ubah ke huruf besar
+        String firstLetter = input.substring(0, 1).toUpperCase();
+
+        // Ambil sisa string setelah huruf pertama dan jadikan huruf kecil
+        String restOfString = input.substring(1).toLowerCase();
+
+        // Gabungkan kembali kedua bagian
+        return firstLetter + restOfString;
+    }
+
 }
