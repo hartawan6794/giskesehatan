@@ -5,5 +5,14 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Fullscreen -->
+<!--        <item name="android:background">@color/primay</item>-->
+        <item name="android:windowNoTitle">true</item>
+
+<!--        <item name="android:windowFullscreen">true</item>-->
+    </style>
+
+
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 </resources>

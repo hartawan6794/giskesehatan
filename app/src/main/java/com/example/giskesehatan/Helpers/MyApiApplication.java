@@ -36,7 +36,7 @@ public class MyApiApplication extends Application {
         });
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(AppConfig.BASE_URL_LOCAL)
+                .baseUrl(AppConfig.BASE_URL)
                 .client(httpClient.build())
                 .build();
 

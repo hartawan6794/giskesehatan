@@ -14,8 +14,6 @@ public class UserModel implements Serializable {
     private String deviceId;
     @SerializedName("username")
     private String username;
-    @SerializedName("telpon")
-    private String telpon;
     @SerializedName("status")
     private String status;
     @SerializedName("password")
@@ -55,13 +53,6 @@ public class UserModel implements Serializable {
         this.username = username;
     }
 
-    public String getTelpon() {
-        return telpon;
-    }
-
-    public void setTelpon(String telpon) {
-        this.telpon = telpon;
-    }
 
     public String getStatus() {
         return status;

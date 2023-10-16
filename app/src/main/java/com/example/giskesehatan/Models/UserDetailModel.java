@@ -23,7 +23,17 @@ public class UserDetailModel implements Serializable {
     private String created_at;
     @SerializedName("updated_at")
     private String updated_at;
+    @SerializedName("telpon")
+    private String telpon;
 
+
+    public String getTelpon() {
+        return telpon;
+    }
+
+    public void setTelpon(String telpon) {
+        this.telpon = telpon;
+    }
     public String getIdUserDetail() {
         return idUserDetail;
     }
