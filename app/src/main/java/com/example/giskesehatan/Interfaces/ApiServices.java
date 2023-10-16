@@ -9,27 +9,16 @@ import com.example.giskesehatan.Models.UserModel;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiServices {
-//    @GET("regis")
-//    Call<ApiResponse<List<ModelPaket>>> getPaket();
-//
-//    @GET("notif")
-//    Call<ApiResponse<List<ModelNotif>>> getNotif(@Query("id_user") String paramValue);
-//
-//    @POST("notif")
-//    Call<ApiResponse> postData(@Body ModelNotif modelNotif);
-//
-//    @GET("permohonan")
-//    Call<ApiResponse<List<ModelPelanggan>>> getPermohonan(@Query("id_user") String paramValue);
-//
-//    @GET("pembayaran")
-////    Call<ApiResponse<List<ModelPembayaran>>> getPembayaran(@Query("id_pelanggan") String paramValue);
-//
     @POST("login")
     Call<ApiResponse<List<SharedPreferenceModel>>> login(@Body LoginModel loginModel);
 
@@ -42,7 +31,14 @@ public interface ApiServices {
     @POST("resetpassword")
     Call<ApiResponse> resetpassword(@Body UserModel userModel);
 
-
     @POST("user")
     Call<ApiResponse<List<UserDetailModel>>> user(@Header("Authorization") String token, @Body UserDetailModel userModel);
+
+//    @Multipart
+//    @POST("uploadimage")
+//    Call<ApiResponse> uploadImage(
+//            @Header("Authorization") String bearerToken, // Header "Authorization" dengan token bearer
+//            @Part MultipartBody.Part image,
+//            @Part("id_user_detail") RequestBody id_user_detail
+//    );
 }

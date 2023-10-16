@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_date"
+        android:background="@color/gray"
+        android:layout_width="24dp"
+        android:layout_height="24dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@color/gray"
+        android:layout_toRightOf="@id/iv_date"
+        android:fontFamily="@font/nunito_regular"
+        android:padding="2dp"
+        android:textColor="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_date"
+        android:background="@color/gray"
+        android:layout_marginStart="8dp"
+        android:layout_toRightOf="@id/iv_date"
+        android:fontFamily="@font/nunito_medium"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_shimmer"
+        android:layout_marginTop="4dp"
+        android:background="@color/gray" />
+
+</RelativeLayout>

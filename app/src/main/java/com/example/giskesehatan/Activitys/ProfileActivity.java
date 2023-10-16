@@ -3,10 +3,13 @@ package com.example.giskesehatan.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +20,9 @@ import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
+import java.security.PrivateKey;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,9 +36,19 @@ public class ProfileActivity extends AppCompatActivity {
     private SharedPreference sharedPreference;
     private ApiServices apiServices;
     //init card title
-    private AppCompatTextView tv_ubah,tv_nama,tv_email;
+    private AppCompatTextView tv_ubah, tv_username,tv_email;
     private CircleImageView cv_img_user;
     private AppCompatImageView iv_back;
+
+    //init user detail component
+    private AppCompatTextView tv_nm_lengkap,tv_nik, tv_date, tv_date_place, tv_gender, tv_phone;
+    private LinearLayoutCompat layout_profile;
+
+    //init shimmer animation effect
+    private ShimmerFrameLayout shimmer_layout;
+
+    //init logout button
+    private CardView cv_logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +64,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         iv_back.setOnClickListener(v -> dashboard());
         tv_ubah.setOnClickListener(v -> formUser());
+        cv_logout.setOnClickListener(v -> logout());
+
+        //shimmer
+        shimmer_layout.startShimmer();
 
         //syntax proses pengambilan data
         String token = AppConfig.keyToken(sharedPreference.readSetting("token"));
@@ -56,10 +75,18 @@ public class ProfileActivity extends AppCompatActivity {
         getdata(token,id_user);
     }
 
+    private void logout() {
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        sharedPreference.deleteAllSettings();
+    }
+
     private void setValueProfile() {
 
         tv_email.setText(sharedPreference.readSetting("email"));
-        tv_nama.setText(AppConfig.capitalizeFirstLetter(sharedPreference.readSetting("nama_lengkap")));
+        tv_username.setText(sharedPreference.readSetting("username"));
         Glide.with(this)
                 .load(sharedPreference.readSetting("img_user"))
                 .centerCrop()
@@ -67,7 +94,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .into(cv_img_user);
     }
     private void formUser() {
-        Toast.makeText(this, "Kehalaman form user", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this,FormUbahActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
     private void dashboard() {
@@ -80,9 +111,18 @@ public class ProfileActivity extends AppCompatActivity {
     private void initComponents() {
         tv_ubah         = findViewById(R.id.tv_ubah);
         tv_email        = findViewById(R.id.tv_email_user);
-        tv_nama         = findViewById(R.id.tv_nm_lengkap);
+        tv_username     = findViewById(R.id.tv_username);
         cv_img_user     = findViewById(R.id.cv_user_profile);
         iv_back         = findViewById(R.id.iv_back);
+        cv_logout       = findViewById(R.id.cv_logout);
+        tv_nm_lengkap   = findViewById(R.id.tv_nm_lengkap);
+        tv_nik          = findViewById(R.id.tv_nik);
+        tv_date         = findViewById(R.id.tv_date);
+        tv_date_place   = findViewById(R.id.tv_date_place);
+        tv_gender       = findViewById(R.id.tv_gender);
+        tv_phone        = findViewById(R.id.tv_phone);
+        shimmer_layout  = findViewById(R.id.shimmer_layout);
+        layout_profile  = findViewById(R.id.layout_profile);
     }
 
     private void getdata(String token, String id_user){
@@ -98,7 +138,15 @@ public class ProfileActivity extends AppCompatActivity {
                     if(apiResponse.isStatus()){
                         List<UserDetailModel> userDetailModels = apiResponse.getResult();
                         for(UserDetailModel userDetailModel1 : userDetailModels){
-                            Log.d(TAG, "onResponse: "+userDetailModel1);
+                            shimmer_layout.stopShimmer();
+                            shimmer_layout.setVisibility(View.GONE);
+                            layout_profile.setVisibility(View.VISIBLE);
+                            tv_nm_lengkap.setText(AppConfig.capitalizeFirstLetter(userDetailModel1.getNamaLengkap()));
+                            tv_nik.setText(userDetailModel1.getNik().equals("") ? "Belum diset" : userDetailModel1.getNik());
+                            tv_date.setText(AppConfig.dateIndonesia(userDetailModel1.getTglLahir()));
+                            tv_date_place.setText(userDetailModel1.getTmpLahir().equals("") ? "Belum diset" : userDetailModel1.getTmpLahir());
+                            tv_gender.setText(userDetailModel1.getJnsKelamin().isEmpty() ? "Belum diset" : userDetailModel1.getJnsKelamin());
+                            tv_phone.setText((userDetailModel1.getTelpon() == null) ? "Belum diset" : userDetailModel1.getTelpon());
                         }
                         Log.d(TAG, "pesan: "+apiResponse.getMessage());
                     }else{
