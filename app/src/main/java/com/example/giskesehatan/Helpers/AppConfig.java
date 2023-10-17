@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class AppConfig {
     public final static String BASE_URL = "http://cmsgis.hanazumaedzaulfa.com/public/api/";
-//    public final static String BASE_URL_LOCAL = "http://192.168.186.114/kesehatan/public/api/";
+    public final static String BASE_URL_IMG_USER = "http://cmsgis.hanazumaedzaulfa.com/public/img/user/";
 
     public static boolean isEmailValid(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";

@@ -50,6 +50,11 @@ public class ProfileActivity extends AppCompatActivity {
     //init logout button
     private CardView cv_logout;
 
+    //init user img url untuk mengakses source dari server
+    private String string_img_url = "";
+    //init data tanggal lahir untuk mengakses source dari server
+    private String string_date = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,20 +89,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setValueProfile() {
-
         tv_email.setText(sharedPreference.readSetting("email"));
         tv_username.setText(sharedPreference.readSetting("username"));
-        Glide.with(this)
-                .load(sharedPreference.readSetting("img_user"))
-                .centerCrop()
-                .placeholder(R.drawable.girl)
-                .into(cv_img_user);
     }
-    private void formUser() {
 
+    private void formUser() {
         Intent intent = new Intent(this,FormUbahActivity.class);
+        intent.putExtra("nama_lengkap", tv_nm_lengkap.getText().toString());
+        intent.putExtra("nik",tv_nik.getText().toString());
+        intent.putExtra("telpon",tv_phone.getText().toString());
+        intent.putExtra("tanggal_lahir",string_date);
+        intent.putExtra("tempat_lahir",tv_date_place.getText().toString());
+        intent.putExtra("jns_kelamin",tv_gender.getText().toString());
+        intent.putExtra("img_user",string_img_url);
         startActivity(intent);
-        finish();
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
@@ -141,12 +146,23 @@ public class ProfileActivity extends AppCompatActivity {
                             shimmer_layout.stopShimmer();
                             shimmer_layout.setVisibility(View.GONE);
                             layout_profile.setVisibility(View.VISIBLE);
+                            string_img_url = userDetailModel1.getImgUser();
+                            if(userDetailModel1.getTglLahir().equals("0000-00-00") || userDetailModel1.getTglLahir().equals("") || userDetailModel1.getTglLahir().equals("null")){
+                                string_date = "Belum di set";
+                            }else {
+                                string_date = userDetailModel1.getTglLahir();
+                            }
                             tv_nm_lengkap.setText(AppConfig.capitalizeFirstLetter(userDetailModel1.getNamaLengkap()));
                             tv_nik.setText(userDetailModel1.getNik().equals("") ? "Belum diset" : userDetailModel1.getNik());
                             tv_date.setText(AppConfig.dateIndonesia(userDetailModel1.getTglLahir()));
                             tv_date_place.setText(userDetailModel1.getTmpLahir().equals("") ? "Belum diset" : userDetailModel1.getTmpLahir());
                             tv_gender.setText(userDetailModel1.getJnsKelamin().isEmpty() ? "Belum diset" : userDetailModel1.getJnsKelamin());
                             tv_phone.setText((userDetailModel1.getTelpon() == null) ? "Belum diset" : userDetailModel1.getTelpon());
+                            Glide.with(ProfileActivity.this)
+                                    .load(AppConfig.BASE_URL_IMG_USER+string_img_url)
+                                    .placeholder(R.drawable.girl)
+                                    .centerCrop()
+                                    .into(cv_img_user);
                         }
                         Log.d(TAG, "pesan: "+apiResponse.getMessage());
                     }else{
@@ -161,5 +177,17 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getdata(sharedPreference.readSetting("token"),sharedPreference.readSetting("id_user"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getdata(sharedPreference.readSetting("token"),sharedPreference.readSetting("id_user"));
     }
 }
