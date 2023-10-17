@@ -2,4 +2,8 @@
     <string name="app_name">Gis Kesehatan</string>
     <string name="settings_file_name">com.example.giskesehatan</string>
     <string name="show_pass">Tampilkan password</string>
+    <string name="rumah_sakit">Rumah\nSakit</string>
+    <string name="rsia">Rumah Sakit \nIbu &amp; Anak</string>
+    <string name="klinik">Klinik</string>
+    <string name="puskesmas">Puskesmas</string>
 </resources>
