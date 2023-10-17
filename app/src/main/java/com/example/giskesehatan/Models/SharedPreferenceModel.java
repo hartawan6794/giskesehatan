@@ -14,9 +14,17 @@ public class SharedPreferenceModel implements Serializable {
     @SerializedName("username")
     private String username;
     @SerializedName("img_user")
-    private String telpon;
+    private String imgUser;
     @SerializedName("bearer_token")
     private String bearerToken;
+
+    public String getImgUser() {
+        return imgUser;
+    }
+
+    public void setImgUser(String imgUser) {
+        this.imgUser = imgUser;
+    }
 
     public String getIdUser() {
         return idUser;
@@ -50,14 +58,6 @@ public class SharedPreferenceModel implements Serializable {
         this.username = username;
     }
 
-    public String getTelpon() {
-        return telpon;
-    }
-
-    public void setTelpon(String telpon) {
-        this.telpon = telpon;
-    }
-
     public String getBearerToken() {
         return bearerToken;
     }
@@ -65,4 +65,6 @@ public class SharedPreferenceModel implements Serializable {
     public void setBearerToken(String bearerToken) {
         this.bearerToken = bearerToken;
     }
+
+
 }

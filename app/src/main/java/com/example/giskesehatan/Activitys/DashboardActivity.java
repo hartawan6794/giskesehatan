@@ -1,7 +1,6 @@
 package com.example.giskesehatan.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import android.content.Intent;
@@ -37,6 +36,7 @@ public class DashboardActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
+        Log.d(TAG, "img: "+sharedPreference.readSetting("img_user"));
         initComponents();
         setValueProfile();
         tv_profile.setOnClickListener(v -> profile());
@@ -52,7 +52,7 @@ public class DashboardActivity extends AppCompatActivity {
         tv_email.setText(sharedPreference.readSetting("email"));
         tv_nm_lengkap.setText(AppConfig.capitalizeFirstLetter(sharedPreference.readSetting("nama_lengkap")));
         Glide.with(this)
-                .load(sharedPreference.readSetting("img_user"))
+                .load(AppConfig.BASE_URL_IMG_USER + sharedPreference.readSetting("img_user"))
                 .centerCrop()
                 .placeholder(R.drawable.girl)
                 .into(img_user);

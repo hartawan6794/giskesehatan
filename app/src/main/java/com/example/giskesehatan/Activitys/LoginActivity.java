@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                                 sharedPreference.addUpdateSettings("email", sharedPreferenceModels.get(0).getEmailUser());
                                 sharedPreference.addUpdateSettings("username", sharedPreferenceModels.get(0).getUsername());
                                 sharedPreference.addUpdateSettings("nama_lengkap", sharedPreferenceModels.get(0).getUsername());
-                                sharedPreference.addUpdateSettings("img_url", sharedPreferenceModels.get(0).getUsername());
+                                sharedPreference.addUpdateSettings("img_user", sharedPreferenceModels.get(0).getImgUser());
                                 Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
