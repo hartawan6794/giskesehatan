@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class AppConfig {
     public final static String BASE_URL = "http://cmsgis.hanazumaedzaulfa.com/public/api/";
     public final static String BASE_URL_IMG_USER = "http://cmsgis.hanazumaedzaulfa.com/public/img/user/";
+    public final static String BASE_URL_IMG = "http://cmsgis.hanazumaedzaulfa.com/public/img/";
 
     public static boolean isEmailValid(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
