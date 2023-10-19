@@ -1,8 +1,13 @@
 package com.example.giskesehatan.Activitys;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.ProgressDialog;
@@ -13,14 +18,18 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Adapters.TempatKesehatanAdapter;
+import com.example.giskesehatan.Adapters.TempatKesehatanTerkiniAdapter;
 import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.MyApiApplication;
 import com.example.giskesehatan.Helpers.SharedPreference;
 import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.Models.ApiResponse;
+import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.R;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,8 +51,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     private CardView cv_puskesmas, cv_klinik, cv_rs, cv_rsia;
 
     //init tempat lokasi terkini
-    private ViewPager2 vp_tempat_lokasi_terkini;
+    private RecyclerView vp_tempat_lokasi_terkini;
     private TempatKesehatanAdapter tempatKesehatanAdapter;
+    private List<TempatKesehatanModel> tempatKesehatanModels;
     private ProgressDialog progressDialog;
     private ApiServices apiServices;
     private ScrollingPagerIndicator indicator_banner;
@@ -70,6 +80,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         getDataTerkini();
 
+
         cv_rs.setOnClickListener(this);
         cv_klinik.setOnClickListener(this);
         cv_puskesmas.setOnClickListener(this);
@@ -81,18 +92,18 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         progressDialog.setCancelable(false);
         progressDialog.show();
         String token = sharedPreference.readSetting("token");
-        Call<ApiResponse<List<TempatKesehatanTerkiniModel>>> call = apiServices.tempatKesehatanTerkini(AppConfig.keyToken(token));
-        call.enqueue(new Callback<ApiResponse<List<TempatKesehatanTerkiniModel>>>() {
+        Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.tempatKesehatanTerkini(AppConfig.keyToken(token));
+        call.enqueue(new Callback<ApiResponse<List<TempatKesehatanModel>>>() {
             @Override
-            public void onResponse(Call<ApiResponse<List<TempatKesehatanTerkiniModel>>> call, Response<ApiResponse<List<TempatKesehatanTerkiniModel>>> response) {
+            public void onResponse(Call<ApiResponse<List<TempatKesehatanModel>>> call, Response<ApiResponse<List<TempatKesehatanModel>>> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    ApiResponse<List<TempatKesehatanTerkiniModel>> apiResponse = response.body();
+                    ApiResponse<List<TempatKesehatanModel>> apiResponse = response.body();
                     if (apiResponse.isStatus()) {
-                        List<TempatKesehatanTerkiniModel> tempatKesehatanTerkiniModels = apiResponse.getResult();
-                        tempatKesehatanAdapter = new TempatKesehatanAdapter(DashboardActivity.this, tempatKesehatanTerkiniModels, vp_tempat_lokasi_terkini);
+                        tempatKesehatanModels = apiResponse.getResult();
+                        tempatKesehatanAdapter = new TempatKesehatanAdapter(DashboardActivity.this, tempatKesehatanModels);
                         vp_tempat_lokasi_terkini.setAdapter(tempatKesehatanAdapter);
-                        indicator_banner.attachToPager(vp_tempat_lokasi_terkini);
+                        indicator_banner.attachToRecyclerView(vp_tempat_lokasi_terkini);
                     } else {
                         Log.d(TAG, "onResponse:" + apiResponse.getMessage());
                     }
@@ -102,7 +113,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<TempatKesehatanTerkiniModel>>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<List<TempatKesehatanModel>>> call, Throwable t) {
                 progressDialog.dismiss();
                 Log.d(TAG, "onResponse: success");
             }
@@ -130,7 +141,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         tv_profile = findViewById(R.id.tv_profile);
         tv_nm_lengkap = findViewById(R.id.tv_nm_lengkap);
         img_user = findViewById(R.id.iv_user_dashboard);
-        vp_tempat_lokasi_terkini = findViewById(R.id.vp2_terkini);
+        vp_tempat_lokasi_terkini = findViewById(R.id.rv_terkini);
         indicator_banner = findViewById(R.id.indicator_banner);
         sharedPreference = new SharedPreference(this);
         progressDialog = new ProgressDialog(this);
@@ -139,6 +150,15 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         cv_puskesmas = findViewById(R.id.cv_puskesmas);
         cv_rs = findViewById(R.id.cv_klinik);
 
+        vp_tempat_lokasi_terkini.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        vp_tempat_lokasi_terkini.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        if(tempatKesehatanModels != null){
+//        }
     }
 
     @Override
@@ -159,6 +179,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         startActivity(intent);
         finish();
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

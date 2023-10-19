@@ -293,13 +293,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_menu"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp2_terkini"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_terkini"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingStart="8dp"
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/indicator_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title_kesehatan_terkini" />
@@ -312,6 +313,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vp2_terkini"
         app:spi_dotSelectedColor="@color/primay" />
 </androidx.constraintlayout.widget.ConstraintLayout>

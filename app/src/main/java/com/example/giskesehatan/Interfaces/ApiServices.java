@@ -4,6 +4,7 @@ import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
 import com.example.giskesehatan.Models.CombineUserModel;
 import com.example.giskesehatan.Models.SharedPreferenceModel;
+import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.Models.UserModel;
@@ -32,8 +33,13 @@ public interface ApiServices {
     Call<ApiResponse<List<UserDetailModel>>> user(@Header("Authorization") String token, @Body UserDetailModel userModel);
 
     @POST("datatempat")
-    Call<ApiResponse<List<TempatKesehatanTerkiniModel>>> tempatKesehatanTerkini(@Header("Authorization") String token);
+    Call<ApiResponse<List<TempatKesehatanModel>>> tempatKesehatanTerkini(@Header("Authorization") String token);
 
+    @POST("getlayanan")
+    Call<ApiResponse<List<TempatKesehatanModel>>> getlayanan(@Header("Authorization") String token, @Body TempatKesehatanModel tempatKesehatanModel);
+
+    @POST("search")
+    Call<ApiResponse<List<TempatKesehatanModel>>> search(@Header("Authorization") String token, @Body TempatKesehatanModel tempatKesehatanModel);
 
 //    @Multipart
 //    @POST("uploadimage")

@@ -199,7 +199,7 @@
                         android:id="@+id/iv_nik"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/id_card" />
+                        android:src="@drawable/nik" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/title_nik"

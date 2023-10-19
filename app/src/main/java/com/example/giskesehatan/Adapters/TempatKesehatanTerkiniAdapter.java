@@ -1,6 +1,5 @@
 package com.example.giskesehatan.Adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.location.Location;
 import android.view.LayoutInflater;
@@ -16,20 +15,19 @@ import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.GPSTracker;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
-import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
-public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatanAdapter.TempatKesehatanViewHolder> {
+public class TempatKesehatanTerkiniAdapter extends RecyclerView.Adapter<TempatKesehatanTerkiniAdapter.TempatKesehatanViewHolder> {
 
     private Context context;
     private List<TempatKesehatanModel> tempatKesehatanModels;
     private ViewPager2 viewPager2;
     private GPSTracker gpsTracker;
 
-    public TempatKesehatanAdapter(Context context, List<TempatKesehatanModel> tempatKesehatanModels) {
+    public TempatKesehatanTerkiniAdapter(Context context, List<TempatKesehatanModel> tempatKesehatanModels) {
         this.context = context;
         this.tempatKesehatanModels = tempatKesehatanModels;
 //        this.viewPager2 = viewPager2;
@@ -48,7 +46,6 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
         );
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull TempatKesehatanViewHolder holder, int position) {
         holder.bind(tempatKesehatanModels.get(position));
@@ -76,7 +73,7 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
             int pos = text.indexOf("-");
             String result = text.substring(0, pos);
             Glide.with(context)
-                    .load(AppConfig.BASE_URL_IMG + result + "/" + tempatKesehatanModels.getGambar())
+                    .load(AppConfig.BASE_URL_IMG + result +"/"+ tempatKesehatanModels.getGambar())
                     .centerCrop()
                     .placeholder(R.drawable.klinik_example)
                     .into(rv_img_kesehata);
@@ -87,7 +84,7 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
                     , gpsTracker.getLongitude()
                     , tempatKesehatanModels.getLatitude()
                     , tempatKesehatanModels.getLongitude());
-            tv_jarak.setText("Est. " + jarak + " km dari anda");
+            tv_jarak.setText("Est. "+jarak+" km dari anda");
         }
 
     }
@@ -96,9 +93,7 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
     private String calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
         float[] results = new float[1];
         Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-        String formattedValue = String.format("%.1f", (results[0] / 1000));
+        String formattedValue = String.format("%.1f", (results[0]/1000));
         return formattedValue;
     }
-
-
 }

@@ -2,8 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primay">#0074CC</color>
+<!--    <color name="primay">#0074CC</color>-->
     <color name="gray">#DDDDDD</color>
 
-    <!--    <color name="primay">#4caf50</color>-->
+        <color name="primay">#04793C</color>
 </resources>
