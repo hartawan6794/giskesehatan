@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class TempatKesehatanModel implements Serializable {
-
-
     @SerializedName("id")
     private String id;
     @SerializedName("nama")
@@ -15,7 +13,7 @@ public class TempatKesehatanModel implements Serializable {
     private String kecamatan;
     @SerializedName("deskripsi")
     private String deskripsi;
-    @SerializedName("Latitude")
+    @SerializedName("latitude")
     private Double latitude;
     @SerializedName("longitude")
     private Double longitude;
@@ -23,8 +21,8 @@ public class TempatKesehatanModel implements Serializable {
     private String gambar;
     @SerializedName("notelp")
     private String notelp;
-    @SerializedName("nm_tabel")
-    private String nmTabel;
+    @SerializedName("tabel")
+    private String tabel;
 
     public String getId() {
         return id;
@@ -90,11 +88,11 @@ public class TempatKesehatanModel implements Serializable {
         this.notelp = notelp;
     }
 
-    public String getNmTabel() {
-        return nmTabel;
+    public String getTabel() {
+        return tabel;
     }
 
-    public void setNmTabel(String nmTabel) {
-        this.nmTabel = nmTabel;
+    public void setTabel(String tabel) {
+        this.tabel = tabel;
     }
 }
