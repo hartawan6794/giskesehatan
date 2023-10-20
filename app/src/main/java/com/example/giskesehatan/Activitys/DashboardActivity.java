@@ -4,11 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,18 +15,14 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Adapters.TempatKesehatanAdapter;
-import com.example.giskesehatan.Adapters.TempatKesehatanTerkiniAdapter;
 import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.MyApiApplication;
 import com.example.giskesehatan.Helpers.SharedPreference;
 import com.example.giskesehatan.Interfaces.ApiServices;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
-import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.R;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -164,7 +157,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
 
-        Intent intent = new Intent(this, TempatKesehatanActivity.class);
+        Intent intent = new Intent(this, LayananKesehatanActivity.class);
 
         int id = view.getId();
 

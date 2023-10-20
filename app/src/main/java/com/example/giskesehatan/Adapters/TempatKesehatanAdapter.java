@@ -2,6 +2,7 @@ package com.example.giskesehatan.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.example.giskesehatan.Activitys.DetailLayananKesehatanActivity;
 import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.GPSTracker;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
@@ -60,15 +63,18 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
     }
 
     class TempatKesehatanViewHolder extends RecyclerView.ViewHolder {
+
+        private CardView cv_kesehatan;
         private RoundedImageView rv_img_kesehata;
         private AppCompatTextView tv_judul, tv_deskripsi, tv_jarak;
 
         public TempatKesehatanViewHolder(@NonNull View itemView) {
             super(itemView);
-            rv_img_kesehata = itemView.findViewById(R.id.img_kesehatan);
-            tv_judul = itemView.findViewById(R.id.tv_nama_kesehatan);
-            tv_deskripsi = itemView.findViewById(R.id.tv_deskripsi);
-            tv_jarak = itemView.findViewById(R.id.tv_jarak);
+            rv_img_kesehata     = itemView.findViewById(R.id.img_kesehatan);
+            tv_judul            = itemView.findViewById(R.id.tv_nama_kesehatan);
+            tv_deskripsi        = itemView.findViewById(R.id.tv_deskripsi);
+            tv_jarak            = itemView.findViewById(R.id.tv_jarak);
+            cv_kesehatan        = itemView.findViewById(R.id.cv_kesehatan);
         }
 
         void bind(TempatKesehatanModel tempatKesehatanModels) {
@@ -88,6 +94,15 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
                     , tempatKesehatanModels.getLatitude()
                     , tempatKesehatanModels.getLongitude());
             tv_jarak.setText("Est. " + jarak + " km dari anda");
+
+            cv_kesehatan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, DetailLayananKesehatanActivity.class);
+                    intent.putExtra("model", tempatKesehatanModels);
+                    context.startActivity(intent);
+                }
+            });
         }
 
     }
