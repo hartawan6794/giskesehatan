@@ -177,16 +177,18 @@ public class ProfileActivity extends AppCompatActivity {
                             shimmer_layout.setVisibility(View.GONE);
                             layout_profile.setVisibility(View.VISIBLE);
                             string_img_url = userDetailModel1.getImgUser();
-                            if (userDetailModel1.getTglLahir().equals("0000-00-00") || userDetailModel1.getTglLahir().equals("") || userDetailModel1.getTglLahir().equals("null")) {
+                            if (userDetailModel1.getTglLahir().equals("0000-00-00")
+                                    || userDetailModel1.getTglLahir().equals("")
+                                    || userDetailModel1.getTglLahir() == null) {
                                 string_date = "Belum di set";
                             } else {
                                 string_date = userDetailModel1.getTglLahir();
                             }
                             tv_nm_lengkap.setText(AppConfig.capitalizeFirstLetter(userDetailModel1.getNamaLengkap()));
-                            tv_nik.setText(userDetailModel1.getNik().equals("") ? "Belum diset" : userDetailModel1.getNik());
+                            tv_nik.setText(userDetailModel1.getNik() == null ? "Belum diset" : userDetailModel1.getNik());
                             tv_date.setText(AppConfig.dateIndonesia(userDetailModel1.getTglLahir()));
-                            tv_date_place.setText(userDetailModel1.getTmpLahir().equals("") ? "Belum diset" : userDetailModel1.getTmpLahir());
-                            tv_gender.setText(userDetailModel1.getJnsKelamin().isEmpty() ? "Belum diset" : userDetailModel1.getJnsKelamin());
+                            tv_date_place.setText(userDetailModel1.getTmpLahir() == null ? "Belum diset" : userDetailModel1.getTmpLahir());
+                            tv_gender.setText(userDetailModel1.getJnsKelamin() == null ? "Belum diset" : userDetailModel1.getJnsKelamin());
                             tv_phone.setText((userDetailModel1.getTelpon() == null) ? "Belum diset" : userDetailModel1.getTelpon());
                             Glide.with(ProfileActivity.this)
                                     .load(AppConfig.BASE_URL_IMG_USER + string_img_url)
