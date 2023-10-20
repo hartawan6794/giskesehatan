@@ -3,6 +3,7 @@ package com.example.giskesehatan.Interfaces;
 import com.example.giskesehatan.Models.ApiResponse;
 import com.example.giskesehatan.Models.LoginModel;
 import com.example.giskesehatan.Models.CombineUserModel;
+import com.example.giskesehatan.Models.RoutesResponseModel;
 import com.example.giskesehatan.Models.SharedPreferenceModel;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
@@ -13,8 +14,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiServices {
     @POST("login")
@@ -40,6 +43,10 @@ public interface ApiServices {
 
     @POST("search")
     Call<ApiResponse<List<TempatKesehatanModel>>> search(@Header("Authorization") String token, @Body TempatKesehatanModel tempatKesehatanModel);
+
+    @GET("maps/api/directions/json?")
+    Call<RoutesResponseModel> getDirection(@Query("origin") String origin, @Query("destination") String destination, @Query("key") String key, @Query("mode") String mode);
+
 
 //    @Multipart
 //    @POST("uploadimage")

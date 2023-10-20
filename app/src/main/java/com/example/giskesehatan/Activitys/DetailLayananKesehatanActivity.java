@@ -12,9 +12,11 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Helpers.AppConfig;
@@ -45,14 +47,10 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
     private AppCompatImageView iv_img_layanan, iv_back, btn_call, btn_call_wa;
     private AppCompatTextView tv_name, tv_deskripsi, tv_kecamatan;
     private AppCompatButton btn_view_map;
+
     //init google map
     private GoogleMap mMap;
     GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private Marker mCurrLocationMarker;
-    private Location mLastLocation;
-    private GPSTracker gpsTracker;
-    private Double latitude,longitude;
     private TempatKesehatanModel tempatKesehatanModel;
 
     @Override
@@ -63,6 +61,9 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         initComponents();
 
         iv_back.setOnClickListener(v -> onBackPressed());
+        btn_call_wa.setOnClickListener(v -> callWa());
+        btn_call.setOnClickListener(v -> caller());
+        btn_view_map.setOnClickListener(v -> tujuanActivity());
 
         checkLocationPermission();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -73,6 +74,40 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         getDataIntent();
     }
 
+    private void tujuanActivity() {
+        Intent intent = new Intent(this, TujuanActivity.class);
+        intent.putExtra("model", tempatKesehatanModel);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+    }
+
+    private void caller() {
+        if(checkPhonePermission()){
+            String dial = "tel:" + tempatKesehatanModel.getNotelp();
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        }else {
+            checkPhonePermission();
+        }
+    }
+
+    private void callWa() {
+        if (tempatKesehatanModel.getNotelp().length() < 11) {
+            Toast.makeText(this, "Nomor wa ini belum diset", Toast.LENGTH_SHORT).show();
+        } else {
+            sendMessageWhatsApp(tempatKesehatanModel.getNotelp());
+        }
+    }
+
+    private void sendMessageWhatsApp(@NonNull String notelp) {
+        String formatPhoneNumber = "+62" + notelp.substring(1);
+        startActivity(
+                new Intent(Intent.ACTION_VIEW, Uri.parse(
+                        String.format("https://api.whatsapp.com/send?phone=%s", formatPhoneNumber)
+                )
+                )
+        );
+    }
+
     private void getDataIntent() {
         Intent intent = getIntent();
         tempatKesehatanModel = (TempatKesehatanModel) intent.getSerializableExtra("model");
@@ -80,13 +115,13 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         int pos = text.indexOf("-");
         String result = text.substring(0, pos);
         Glide.with(this)
-                .load(AppConfig.BASE_URL_IMG+result+"/"+tempatKesehatanModel.getGambar())
+                .load(AppConfig.BASE_URL_IMG + result + "/" + tempatKesehatanModel.getGambar())
                 .centerCrop()
                 .placeholder(R.drawable.klinik_example)
                 .into(iv_img_layanan);
         tv_name.setText(tempatKesehatanModel.getNama());
         tv_deskripsi.setText(tempatKesehatanModel.getDeskripsi());
-        tv_kecamatan.setText("Kecamatan : "+tempatKesehatanModel.getKecamatan());
+        tv_kecamatan.setText("Kecamatan : " + tempatKesehatanModel.getKecamatan());
     }
 
     private void initComponents() {
@@ -98,8 +133,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         tv_deskripsi = findViewById(R.id.tv_deskripsi);
         tv_kecamatan = findViewById(R.id.tv_kecamatan);
         btn_view_map = findViewById(R.id.btn_view_map);
-        gpsTracker = new GPSTracker(this);
-
     }
 
     @Override
@@ -124,9 +157,9 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         }
 
         mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(tempatKesehatanModel.getNama())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)));
+                .position(latLng)
+                .title(tempatKesehatanModel.getNama())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)));
 
         // Geser peta ke lokasi yang diklik
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -189,6 +222,30 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
             return true;
         }
     }
+
+    //mendapatkan permission request call phone
+    public static final int MY_PERMISSIONS_REQUEST_Call_PHONE = 98;
+
+    public boolean checkPhonePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.CALL_PHONE)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
