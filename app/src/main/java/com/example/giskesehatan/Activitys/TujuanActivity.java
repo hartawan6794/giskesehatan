@@ -201,8 +201,6 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                         .addAll(decodedPolyline)
                         .width(10) // Lebar jalur
                         .color(getResources().getColor(R.color.primay)); // Warna jalur
-
-// Tambahkan polyline ke peta
                 Polyline polyline =googleMap.addPolyline(polylineOptions);
 
             }
