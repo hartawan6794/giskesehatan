@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TempatKesehatanActivity extends AppCompatActivity {
+public class LayananKesehatanActivity extends AppCompatActivity {
 
     private static final String TAG = "TempatKes...Activity";
 
@@ -101,7 +101,7 @@ public class TempatKesehatanActivity extends AppCompatActivity {
                                     rv_layanan_kesehatan.setVisibility(View.GONE);
                                     layout_empty.setVisibility(View.VISIBLE);
                                 }
-                                tempatKesehatanAdapter = new TempatKesehatanAdapter(TempatKesehatanActivity.this, tempatKesehatanModels);
+                                tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, tempatKesehatanModels);
                                 rv_layanan_kesehatan.setAdapter(tempatKesehatanAdapter);
                                 tempatKesehatanAdapter.notifyDataSetChanged();
                                 Log.d(TAG, "Message: " + apiResponse.getMessage());
@@ -171,7 +171,7 @@ public class TempatKesehatanActivity extends AppCompatActivity {
                             rv_layanan_kesehatan.setVisibility(View.GONE);
                             layout_empty.setVisibility(View.VISIBLE);
                         }
-                        tempatKesehatanAdapter = new TempatKesehatanAdapter(TempatKesehatanActivity.this, filterModel);
+                        tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, filterModel);
                         rv_layanan_kesehatan.setAdapter(tempatKesehatanAdapter);
                         tempatKesehatanAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Message: " + apiResponse.getMessage());
@@ -223,7 +223,7 @@ public class TempatKesehatanActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(TempatKesehatanActivity.this, DashboardActivity.class);
+        Intent intent = new Intent(LayananKesehatanActivity.this, DashboardActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
