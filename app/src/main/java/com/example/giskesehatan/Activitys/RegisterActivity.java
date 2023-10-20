@@ -147,11 +147,12 @@ public class RegisterActivity extends AppCompatActivity {
                                                             Toast.makeText(RegisterActivity.this, "Silahkan masuk dengan email dan password yang sudah anda buat", Toast.LENGTH_SHORT).show();
                                                             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                                             intent.putExtra("email", email);
+                                                            finish();
                                                             startActivity(intent);
                                                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                                         } else
                                                             Log.d(TAG, "pesan: "+apiResponse.getMessage());
-//                                                            Toast.makeText(RegisterActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(RegisterActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                                     } else {
                                                         // Tangani jika respons tidak berhasil (kode status bukan 2xx)
                                                         Log.e(TAG, "Error body: " + response.errorBody());

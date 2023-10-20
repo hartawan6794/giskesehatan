@@ -38,10 +38,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -169,8 +172,19 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         httpClient.addInterceptor(loggingInterceptor); // Tambahkan interceptor logging ke HttpClient
+//        httpClient.addInterceptor(new Interceptor() {
+//            @Override
+//            public okhttp3.Response intercept(Chain chain) throws IOException {
+//                Request originalRequest = chain.request();
+//                Request newRequest = originalRequest.newBuilder()
+//                        .header("Referer", "http://hanazumaedzaulfa.com/") // Atur referer sesuai dengan situs web atau aplikasi Anda
+//                        .build();
+//                return chain.proceed(newRequest);
+//            }
+//        });
         String origin = currentLocation.latitude + "," + currentLocation.longitude;
         String desti = destination.latitude + "," + destination.longitude;
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://maps.googleapis.com/")
                 .client(httpClient.build())
@@ -178,16 +192,23 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                 .build();
 
         ApiServices service = retrofit.create(ApiServices.class);
-        Call<RoutesResponseModel> call = service.getDirection(origin, desti, getResources().getString(R.string.my_api_maps), "driving");
+        Call<RoutesResponseModel> call = service.getDirection(origin, desti, getResources().getString(R.string.my_api_maps_direction), "driving");
         call.enqueue(new Callback<RoutesResponseModel>() {
             @Override
             public void onResponse(Call<RoutesResponseModel> call, Response<RoutesResponseModel> response) {
                 RoutesResponseModel routeResponse = response.body();
+                double totalDistance = 0.0;
+                int totalDuration = 0;
                 Log.d(TAG, "routeResponse: " + response.body());
                 List<Route> routes = routeResponse.getRoutes();
                 for (Route route : routes){
                     List<Leg> legs = route.getLegs();
                     for (Leg leg : legs){
+                        double segmentDistance = leg.getDistance().getValue();
+                        int segmentDuration = leg.getDuration().getValue();
+
+                        totalDistance += segmentDistance;
+                        totalDuration += segmentDuration;
                         List<Step> steps = leg.getSteps();
                         for(Step step: steps){
                             decodedPolyline.addAll(decodePoly(step.getPolyline().getPoints()));
@@ -196,7 +217,9 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                     }
                 }
 
-                Log.d(TAG, "onResponse: "+decodedPolyline);
+                Log.d(TAG, "totalDistance: "+(totalDistance/1000));
+                Log.d(TAG, "totalDuration: "+(totalDuration/60));
+//                Log.d(TAG, "onResponse: "+decodedPolyline);
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(decodedPolyline)
                         .width(10) // Lebar jalur

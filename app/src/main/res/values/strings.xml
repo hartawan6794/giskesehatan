@@ -6,5 +6,8 @@
     <string name="rsia">Rumah Sakit \nIbu &amp; Anak</string>
     <string name="klinik">Klinik</string>
     <string name="puskesmas">Puskesmas</string>
-    <string name="my_api_maps">AIzaSyBnkifSCgTvBSaetRpg41N94X0coajNhNE</string>
+    <string name="my_api_maps" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBnkifSCgTvBSaetRpg41N94X0coajNhNE</string>
+    <string name="my_api_maps_direction" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyCyhfXnJF5yTSBa5iDsKapR8GTgT1nICsM</string>
 </resources>
