@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
 
     <application
         android:name=".Helpers.MyApiApplication"
@@ -21,11 +23,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activitys.TujuanActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activitys.LayananKesehatanActivity"
             android:exported="false" />
         <activity
-        android:name=".Activitys.DetailLayananKesehatanActivity"
-        android:exported="false" />
+            android:name=".Activitys.DetailLayananKesehatanActivity"
+            android:exported="false" />
         <activity
             android:name=".Activitys.FormUbahActivity"
             android:exported="false" />
@@ -56,9 +61,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBnkifSCgTvBSaetRpg41N94X0coajNhNE" />
+            android:value="@string/my_api_maps" />
     </application>
 
 </manifest>
