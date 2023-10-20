@@ -160,7 +160,7 @@ public class ProfileActivity extends AppCompatActivity {
         layout_profile = findViewById(R.id.layout_profile);
     }
 
-    private void getdata(String token, String id_user) {
+    private void getdata(String token, String id_user){
         UserDetailModel userDetailModel = new UserDetailModel();
         userDetailModel.setIdUserDetail(id_user);
 
@@ -194,18 +194,17 @@ public class ProfileActivity extends AppCompatActivity {
                                     .centerCrop()
                                     .into(cv_img_user);
                         }
-                        Log.d(TAG, "pesan: " + apiResponse.getMessage());
-                    } else {
-                        Log.d(TAG, "pesan: " + apiResponse.getMessage());
+                        Log.d(TAG, "pesan: "+apiResponse.getMessage());
+                    }else{
+                        Log.d(TAG, "pesan: "+apiResponse.getMessage());
                     }
-                } else {
-                    Log.d(TAG, "pesan: " + response.message());
+                }else{
+                    Log.d(TAG, "pesan: "+response.message());
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<List<UserDetailModel>>> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
+                Log.d(TAG, "onFailure: "+t.getMessage());
             }
         });
     }
@@ -213,12 +212,12 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        getdata(sharedPreference.readSetting("token"), sharedPreference.readSetting("id_user"));
+        getdata(sharedPreference.readSetting("token"),sharedPreference.readSetting("id_user"));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getdata(sharedPreference.readSetting("token"), sharedPreference.readSetting("id_user"));
+        getdata(sharedPreference.readSetting("token"),sharedPreference.readSetting("id_user"));
     }
 }
