@@ -4,7 +4,6 @@ import android.Manifest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -279,9 +278,11 @@ public class FormUbahActivity extends AppCompatActivity {
                 imageFile = getFileFromUri(data.getData());
                 Log.d(TAG, "file: " + imageFile);
                 gambar = getFileName(selectedImageUri);
-                Glide.with(this).load(selectedImageUri).fitCenter().placeholder(R.drawable.girl).into(cv_img_user);
-
-
+                Glide.with(this)
+                        .load(selectedImageUri)
+                        .fitCenter()
+                        .placeholder(R.drawable.girl)
+                        .into(cv_img_user);
             }
         }
     }

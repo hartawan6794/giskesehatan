@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +30,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,13 +41,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -248,16 +243,16 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                     }
                 }
 
-                Log.d(TAG, "totalDistance: " + (totalDistance / 1000));
-                Log.d(TAG, "totalDuration: " + (totalDuration / 60));
                 String est = "Est. Waktu "+(totalDuration / 60)+" Menit";
+                String estJarak = "Est. Jarak "+(totalDistance / 1000)+" Km";
 
                 tv_est_duration.setText(est);
 
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(decodedPolyline)
                         .width(20) // Lebar jalur
-                        .color(getResources().getColor(R.color.primay)); // Warna jalur
+                        .color(getResources().getColor(R.color.primay))
+                        .geodesic(true); // Warna jalur
                 Polyline polyline = googleMap.addPolyline(polylineOptions);
 
             }

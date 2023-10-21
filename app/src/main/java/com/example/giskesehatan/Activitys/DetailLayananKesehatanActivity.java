@@ -12,15 +12,11 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Helpers.AppConfig;
-import com.example.giskesehatan.Helpers.GPSTracker;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -35,7 +31,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class DetailLayananKesehatanActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -78,8 +73,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
-
-
 
     private void getDataIntent() {
         Intent intent = getIntent();
@@ -134,8 +127,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
 
         // Geser peta ke lokasi yang diklik
         mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-
-//        googleMap.setOnMapClickListener(this);
     }
 
     private void buildGoogleApiClient() {
