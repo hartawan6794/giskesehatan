@@ -44,7 +44,7 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
     private static final String TAG = "DetailLayananKesehatanActivity";
 
     //init layout_head
-    private AppCompatImageView iv_img_layanan, iv_back, btn_call, btn_call_wa;
+    private AppCompatImageView iv_img_layanan, iv_back;
     private AppCompatTextView tv_name, tv_deskripsi, tv_kecamatan;
     private AppCompatButton btn_view_map;
 
@@ -61,8 +61,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         initComponents();
 
         iv_back.setOnClickListener(v -> onBackPressed());
-        btn_call_wa.setOnClickListener(v -> callWa());
-        btn_call.setOnClickListener(v -> caller());
         btn_view_map.setOnClickListener(v -> tujuanActivity());
 
         checkLocationPermission();
@@ -81,32 +79,7 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
-    private void caller() {
-        if(checkPhonePermission()){
-            String dial = "tel:" + tempatKesehatanModel.getNotelp();
-            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-        }else {
-            checkPhonePermission();
-        }
-    }
 
-    private void callWa() {
-        if (tempatKesehatanModel.getNotelp().length() < 11) {
-            Toast.makeText(this, "Nomor wa ini belum diset", Toast.LENGTH_SHORT).show();
-        } else {
-            sendMessageWhatsApp(tempatKesehatanModel.getNotelp());
-        }
-    }
-
-    private void sendMessageWhatsApp(@NonNull String notelp) {
-        String formatPhoneNumber = "+62" + notelp.substring(1);
-        startActivity(
-                new Intent(Intent.ACTION_VIEW, Uri.parse(
-                        String.format("https://api.whatsapp.com/send?phone=%s", formatPhoneNumber)
-                )
-                )
-        );
-    }
 
     private void getDataIntent() {
         Intent intent = getIntent();
@@ -127,8 +100,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
     private void initComponents() {
         iv_img_layanan = findViewById(R.id.iv_img_layanan);
         iv_back = findViewById(R.id.iv_back);
-        btn_call = findViewById(R.id.btn_call);
-        btn_call_wa = findViewById(R.id.btn_call_wa);
         tv_name = findViewById(R.id.tv_name);
         tv_deskripsi = findViewById(R.id.tv_deskripsi);
         tv_kecamatan = findViewById(R.id.tv_kecamatan);
@@ -222,30 +193,6 @@ public class DetailLayananKesehatanActivity extends AppCompatActivity implements
             return true;
         }
     }
-
-    //mendapatkan permission request call phone
-    public static final int MY_PERMISSIONS_REQUEST_Call_PHONE = 98;
-
-    public boolean checkPhonePermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.CALL_PHONE)) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.CALL_PHONE},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.CALL_PHONE},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
