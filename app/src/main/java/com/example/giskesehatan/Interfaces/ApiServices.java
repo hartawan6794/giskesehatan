@@ -1,6 +1,7 @@
 package com.example.giskesehatan.Interfaces;
 
 import com.example.giskesehatan.Models.ApiResponse;
+import com.example.giskesehatan.Models.ApiResponseWheater;
 import com.example.giskesehatan.Models.LoginModel;
 import com.example.giskesehatan.Models.CombineUserModel;
 import com.example.giskesehatan.Models.RoutesResponseModel;
@@ -33,20 +34,30 @@ public interface ApiServices {
     Call<ApiResponse> resetpassword(@Body UserModel userModel);
 
     @POST("user")
-    Call<ApiResponse<List<UserDetailModel>>> user(@Header("Authorization") String token, @Body UserDetailModel userModel);
+    Call<ApiResponse<List<UserDetailModel>>> user(@Header("Authorization") String token,
+                                                  @Body UserDetailModel userModel);
 
     @POST("datatempat")
     Call<ApiResponse<List<TempatKesehatanModel>>> tempatKesehatanTerkini(@Header("Authorization") String token);
 
     @POST("getlayanan")
-    Call<ApiResponse<List<TempatKesehatanModel>>> getlayanan(@Header("Authorization") String token, @Body TempatKesehatanModel tempatKesehatanModel);
+    Call<ApiResponse<List<TempatKesehatanModel>>> getlayanan(@Header("Authorization") String token,
+                                                             @Body TempatKesehatanModel tempatKesehatanModel);
 
     @POST("search")
-    Call<ApiResponse<List<TempatKesehatanModel>>> search(@Header("Authorization") String token, @Body TempatKesehatanModel tempatKesehatanModel);
+    Call<ApiResponse<List<TempatKesehatanModel>>> search(@Header("Authorization") String token,
+                                                         @Body TempatKesehatanModel tempatKesehatanModel);
 
     @GET("maps/api/directions/json?")
-    Call<RoutesResponseModel> getDirection(@Query("origin") String origin, @Query("destination") String destination, @Query("key") String key, @Query("mode") String mode);
+    Call<RoutesResponseModel> getDirection(@Query("origin") String origin,
+                                           @Query("destination") String destination,
+                                           @Query("key") String key,
+                                           @Query("mode") String mode);
 
+    @GET("current.json")
+    Call<ApiResponseWheater> getWheater(@Header("X-RapidAPI-Key") String key,
+                                        @Header("X-RapidAPI-Host") String host,
+                                        @Query("q") String q);
 
 //    @Multipart
 //    @POST("uploadimage")

@@ -66,7 +66,7 @@ public class LayananKesehatanActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            tv_title.setText(AppConfig.capitalizeFirstLetter(extras.getString("title")) + "Terdekat");
+            tv_title.setText(AppConfig.capitalizeFirstLetter(extras.getString("title")) + " Terdekat");
         }
 
         iv_back.setOnClickListener(v -> onBackPressed());
@@ -101,7 +101,7 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                                     rv_layanan_kesehatan.setVisibility(View.GONE);
                                     layout_empty.setVisibility(View.VISIBLE);
                                 }
-                                tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, tempatKesehatanModels);
+                                tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, tempatKesehatanModels,null, 2);
                                 rv_layanan_kesehatan.setAdapter(tempatKesehatanAdapter);
                                 tempatKesehatanAdapter.notifyDataSetChanged();
                                 Log.d(TAG, "Message: " + apiResponse.getMessage());
@@ -171,7 +171,7 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                             rv_layanan_kesehatan.setVisibility(View.GONE);
                             layout_empty.setVisibility(View.VISIBLE);
                         }
-                        tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, filterModel);
+                        tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, filterModel, null,2);
                         rv_layanan_kesehatan.setAdapter(tempatKesehatanAdapter);
                         tempatKesehatanAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Message: " + apiResponse.getMessage());

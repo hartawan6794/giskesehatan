@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -31,12 +33,14 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
     private List<TempatKesehatanModel> tempatKesehatanModels;
     private ViewPager2 viewPager2;
     private GPSTracker gpsTracker;
+    int VIEW_TYPE;
 
-    public TempatKesehatanAdapter(Context context, List<TempatKesehatanModel> tempatKesehatanModels) {
-        this.context = context;
-        this.tempatKesehatanModels = tempatKesehatanModels;
-//        this.viewPager2 = viewPager2;
-        this.gpsTracker = new GPSTracker(context);
+    public TempatKesehatanAdapter(Context context, List<TempatKesehatanModel> tempatKesehatanModels,ViewPager2 viewPager2 , int VIEW_TYPE) {
+        this.context                = context;
+        this.tempatKesehatanModels  = tempatKesehatanModels;
+        this.viewPager2 = viewPager2;
+        this.gpsTracker             = new GPSTracker(context);
+        this.VIEW_TYPE              = VIEW_TYPE;
     }
 
     @NonNull
@@ -55,6 +59,14 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
     @Override
     public void onBindViewHolder(@NonNull TempatKesehatanViewHolder holder, int position) {
         holder.bind(tempatKesehatanModels.get(position));
+        if(VIEW_TYPE == 2){
+            holder.cv_kesehatan.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            holder.cv_kesehatan.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        }else{
+            if(position == tempatKesehatanModels.size() -2){
+                viewPager2.post(runnable);
+            }
+        }
     }
 
     @Override
@@ -114,6 +126,14 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
         String formattedValue = String.format("%.1f", (results[0] / 1000));
         return formattedValue;
     }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            tempatKesehatanModels.addAll(tempatKesehatanModels);
+            notifyDataSetChanged();
+        }
+    };
 
 
 }
