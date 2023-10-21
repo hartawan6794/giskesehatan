@@ -144,20 +144,20 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        tv_ubah = findViewById(R.id.tv_ubah);
-        tv_email = findViewById(R.id.tv_email_user);
-        tv_username = findViewById(R.id.tv_username);
-        cv_img_user = findViewById(R.id.cv_user_profile);
-        iv_back = findViewById(R.id.iv_back);
-        cv_logout = findViewById(R.id.cv_logout);
-        tv_nm_lengkap = findViewById(R.id.tv_nm_lengkap);
-        tv_nik = findViewById(R.id.tv_nik);
-        tv_date = findViewById(R.id.tv_date);
-        tv_date_place = findViewById(R.id.tv_date_place);
-        tv_gender = findViewById(R.id.tv_gender);
-        tv_phone = findViewById(R.id.tv_phone);
-        shimmer_layout = findViewById(R.id.shimmer_layout);
-        layout_profile = findViewById(R.id.layout_profile);
+        tv_ubah             = findViewById(R.id.tv_ubah);
+        tv_email            = findViewById(R.id.tv_email_user);
+        tv_username         = findViewById(R.id.tv_username);
+        cv_img_user         = findViewById(R.id.cv_user_profile);
+        iv_back             = findViewById(R.id.iv_back);
+        cv_logout           = findViewById(R.id.cv_logout);
+        tv_nm_lengkap       = findViewById(R.id.tv_nm_lengkap);
+        tv_nik              = findViewById(R.id.tv_nik);
+        tv_date             = findViewById(R.id.tv_date);
+        tv_date_place       = findViewById(R.id.tv_date_place);
+        tv_gender           = findViewById(R.id.tv_gender);
+        tv_phone            = findViewById(R.id.tv_phone);
+        shimmer_layout      = findViewById(R.id.shimmer_layout);
+        layout_profile      = findViewById(R.id.layout_profile);
     }
 
     private void getdata(String token, String id_user){

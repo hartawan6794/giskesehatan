@@ -18,4 +18,194 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_destini"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:alpha="0.8"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/turn_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_my_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/baseline_my_location_24"
+                app:layout_constraintStart_toEndOf="@+id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_dotted"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="1dp"
+                android:src="@drawable/dotted_line"
+                app:layout_constraintEnd_toEndOf="@+id/iv_my_location"
+                app:layout_constraintStart_toStartOf="@+id/iv_my_location"
+                app:layout_constraintTop_toBottomOf="@id/iv_my_location" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_destination"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/pin"
+                app:layout_constraintEnd_toEndOf="@+id/iv_my_location"
+                app:layout_constraintStart_toStartOf="@+id/iv_my_location"
+                app:layout_constraintTop_toBottomOf="@+id/iv_dotted" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_current_location"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_btn_pilih"
+                android:fontFamily="@font/nunito_medium"
+                android:gravity="center_vertical"
+                android:paddingStart="18dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="6dp"
+                android:text="Lokasi Anda"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_my_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_my_location"
+                app:layout_constraintTop_toTopOf="@+id/iv_my_location" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_destination_location"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_btn_pilih"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingStart="18dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_destination"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_destination"
+                app:layout_constraintTop_toTopOf="@+id/iv_destination" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:alpha="0.8"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_est_duration"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/hourglass"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_est_duration"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:fontFamily="@font/nunito_medium"
+                android:layout_marginStart="10dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_est_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_est_duration"
+                app:layout_constraintTop_toTopOf="@id/iv_est_duration" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primay"
+                android:layout_margin="10dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_est_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/layout_call"/>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/layout_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_est_duration">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_btn_call"
+                    android:padding="10dp"
+                    android:src="@drawable/call"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btn_call_wa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_btn_call"
+                    android:padding="10dp"
+                    android:src="@drawable/whatsapp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

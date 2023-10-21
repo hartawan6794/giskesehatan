@@ -1,11 +1,8 @@
 package com.example.giskesehatan.Activitys;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.ProgressDialog;
@@ -14,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.giskesehatan.Adapters.TempatKesehatanAdapter;
@@ -142,9 +140,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
                         vp_tempat_lokasi_terkini.setAdapter(tempatKesehatanAdapter);
                         indicator_banner.attachToPager(vp_tempat_lokasi_terkini);
                     } else {
+                        Toast.makeText(DashboardActivity.this, apiResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "onResponse:" + apiResponse.getMessage());
                     }
                 } else {
+                    Toast.makeText(DashboardActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onResponse: success");
                 }
             }
@@ -152,7 +152,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onFailure(Call<ApiResponse<List<TempatKesehatanModel>>> call, Throwable t) {
                 progressDialog.dismiss();
-                Log.d(TAG, "onResponse: success");
+                Toast.makeText(DashboardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onResponse:"+t.getMessage());
             }
         });
     }
@@ -190,9 +191,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         progressDialog              = new ProgressDialog(this);
         gpsTracker                  = new GPSTracker(this);
 
-//        vp_tempat_lokasi_terkini.setLayoutManager(new LinearLayoutManager(this,
-//                LinearLayoutManager.HORIZONTAL, false));
-
         vp_tempat_lokasi_terkini.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -212,13 +210,6 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             vp_tempat_lokasi_terkini.setCurrentItem(vp_tempat_lokasi_terkini.getCurrentItem() + 1);
         }
     };
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        if(tempatKesehatanModels != null){
-//        }
-    }
 
     @Override
     public void onClick(View view) {

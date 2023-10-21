@@ -192,15 +192,17 @@ public class LayananKesehatanActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        gpsTracker = new GPSTracker(this);
-        tv_title = findViewById(R.id.tv_title);
-        sv_tempat_kesehatan = findViewById(R.id.sv_tempat_kesehatan);
-        iv_back = findViewById(R.id.iv_back);
-        rv_layanan_kesehatan = findViewById(R.id.rv_layanan_kesehatan);
-        layout_empty = findViewById(R.id.layout_empty);
-        sharedPreference = new SharedPreference(this);
-        progressDialog = new ProgressDialog(this);
+        gpsTracker              = new GPSTracker(this);
+        tv_title                = findViewById(R.id.tv_title);
+        sv_tempat_kesehatan     = findViewById(R.id.sv_tempat_kesehatan);
+        iv_back                 = findViewById(R.id.iv_back);
+        rv_layanan_kesehatan    = findViewById(R.id.rv_layanan_kesehatan);
+        layout_empty            = findViewById(R.id.layout_empty);
+        sharedPreference        = new SharedPreference(this);
+        progressDialog          = new ProgressDialog(this);
+
         rv_layanan_kesehatan.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         MyApiApplication myApiApplication = (MyApiApplication) getApplication();
         apiServices = myApiApplication.getApiService();
         sv_tempat_kesehatan.setQueryHint("Cari. . .");
