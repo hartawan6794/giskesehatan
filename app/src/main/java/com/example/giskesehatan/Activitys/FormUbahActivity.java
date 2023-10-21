@@ -87,11 +87,6 @@ public class FormUbahActivity extends AppCompatActivity {
         sharedPreference = new SharedPreference(this);
         initComponents();
 
-        cv_img_user.setOnClickListener(v -> choicePhoto());
-        iv_back.setOnClickListener(v -> onBackPressed());
-        iv_simpan.setOnClickListener(v -> kirimKeServer());
-        ed_tgl_lahir.setOnClickListener(v -> showDatePickerDialog());
-
         MyApiApplication myApiApplication = (MyApiApplication) getApplication();
         apiServices = myApiApplication.getApiService();
 
@@ -128,13 +123,28 @@ public class FormUbahActivity extends AppCompatActivity {
                     .centerCrop()
                     .into(cv_img_user);
         }
+        cv_img_user.setOnClickListener(v -> choicePhoto());
+        iv_back.setOnClickListener(v -> onBackPressed());
+        iv_simpan.setOnClickListener(v -> kirimKeServer());
+        ed_tgl_lahir.setOnClickListener(v -> showDatePickerDialog(string_tanggal_lahir));
     }
 
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(String tanggal) {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = 0;
+        int month = 0;
+        int day = 0;
+
+        if(tanggal.equals("0000-00-00") || tanggal.isEmpty()){
+             year = calendar.get(Calendar.YEAR);
+             month = calendar.get(Calendar.MONTH);
+             day = calendar.get(Calendar.DAY_OF_MONTH);
+        }else{
+            String[] parts = tanggal.split("-");
+            year = Integer.parseInt(parts[0]);
+            month = Integer.parseInt(parts[1]) - 1;
+            day = Integer.parseInt(parts[2]);
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 android.R.style.Theme_Holo_Dialog,
@@ -222,6 +232,7 @@ public class FormUbahActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             Boolean status = response.getBoolean("success");
+                            progressDialog.dismiss();
                             if (status) {
                                 Toast.makeText(FormUbahActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(FormUbahActivity.this,ProfileActivity.class);
