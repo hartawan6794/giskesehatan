@@ -135,7 +135,7 @@ public class FormUbahActivity extends AppCompatActivity {
         int month = 0;
         int day = 0;
 
-        if(tanggal.equals("0000-00-00") || tanggal.isEmpty()){
+        if(tanggal.equals("0000-00-00") || tanggal.isEmpty() || tanggal.equals("Belum di set")){
              year = calendar.get(Calendar.YEAR);
              month = calendar.get(Calendar.MONTH);
              day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -155,6 +155,16 @@ public class FormUbahActivity extends AppCompatActivity {
                         ed_tgl_lahir.setText(AppConfig.dateIndonesia(string_tanggal_lahir));
                     }
                 }, year, month, day);
+
+        // Set nilai minimum dan maksimum untuk tanggal yang dapat dipilih
+        Calendar minDate = Calendar.getInstance();
+        minDate.set(1945, Calendar.JANUARY, 1);
+
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.set(maxDate.get(Calendar.YEAR), maxDate.get(Calendar.MONTH),maxDate.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
 
         datePickerDialog.show();
     }
@@ -191,7 +201,7 @@ public class FormUbahActivity extends AppCompatActivity {
     }
 
     private void uploadToServer() {
-        String bearerToken = AppConfig.keyToken(sharedPreference.readSetting("token")); // Ganti dengan token bearer yang sesuai
+        String bearerToken           = AppConfig.keyToken(sharedPreference.readSetting("token")); // Ganti dengan token bearer yang sesuai
         String string_id_user_detail = sharedPreference.readSetting("id_user");
 
         string_nama_lengkap     = ed_nm_lengkap.getText().toString();
