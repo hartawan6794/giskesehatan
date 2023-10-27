@@ -201,7 +201,7 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    public void getRoutes(LatLng currentLocation, LatLng destination, GoogleMap googleMap) {
+    public void getRoutes(@NonNull LatLng currentLocation, LatLng destination, GoogleMap googleMap) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
