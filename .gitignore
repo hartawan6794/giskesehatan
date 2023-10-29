@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+sha-1.txt
