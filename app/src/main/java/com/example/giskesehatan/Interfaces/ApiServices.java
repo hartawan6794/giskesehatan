@@ -37,7 +37,8 @@ public interface ApiServices {
                                                   @Body UserDetailModel userModel);
 
     @POST("datatempat")
-    Call<ApiResponse<List<TempatKesehatanModel>>> tempatKesehatanTerkini(@Header("Authorization") String token);
+    Call<ApiResponse<List<TempatKesehatanModel>>> tempatKesehatanTerkini(@Header("Authorization") String token,
+                                                                         @Body TempatKesehatanModel tempatKesehatanModel);
 
     @POST("getlayanan")
     Call<ApiResponse<List<TempatKesehatanModel>>> getlayanan(@Header("Authorization") String token,

@@ -23,6 +23,16 @@ public class TempatKesehatanModel implements Serializable {
     private String notelp;
     @SerializedName("tabel")
     private String tabel;
+    @SerializedName("distance")
+    private Double distance;
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 
     public String getId() {
         return id;

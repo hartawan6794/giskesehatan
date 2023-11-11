@@ -127,7 +127,11 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         progressDialog.setCancelable(false);
         progressDialog.show();
         String token = sharedPreference.readSetting("token");
-        Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.tempatKesehatanTerkini(AppConfig.keyToken(token));
+
+        TempatKesehatanModel tempatKesehatanModel = new TempatKesehatanModel();
+        tempatKesehatanModel.setLatitude(gpsTracker.getLatitude());
+        tempatKesehatanModel.setLongitude(gpsTracker.getLongitude());
+        Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.tempatKesehatanTerkini(AppConfig.keyToken(token), tempatKesehatanModel);
         call.enqueue(new Callback<ApiResponse<List<TempatKesehatanModel>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<TempatKesehatanModel>>> call, Response<ApiResponse<List<TempatKesehatanModel>>> response) {
