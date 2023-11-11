@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatanAdapter.TempatKesehatanViewHolder> {
@@ -59,6 +62,8 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
         if(VIEW_TYPE == 2){
             holder.cv_kesehatan.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
             holder.cv_kesehatan.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+
         }else{
             if(position == tempatKesehatanModels.size() -2){
                 viewPager2.post(runnable);
@@ -86,6 +91,7 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
             cv_kesehatan        = itemView.findViewById(R.id.cv_kesehatan);
         }
 
+        @SuppressLint("SetTextI18n")
         void bind(TempatKesehatanModel tempatKesehatanModels) {
             String text = tempatKesehatanModels.getGambar();
             int pos = text.indexOf("-");
@@ -98,11 +104,11 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
             tv_judul.setText(tempatKesehatanModels.getNama());
             tv_deskripsi.setText(tempatKesehatanModels.getDeskripsi());
 
-            String jarak = calculateDistance(gpsTracker.getLatitude()
-                    , gpsTracker.getLongitude()
-                    , tempatKesehatanModels.getLatitude()
-                    , tempatKesehatanModels.getLongitude());
-            tv_jarak.setText("Est. " + jarak + " km dari anda");
+//            String jarak = calculateDistance(gpsTracker.getLatitude()
+//                    , gpsTracker.getLongitude()
+//                    , tempatKesehatanModels.getLatitude()
+//                    , tempatKesehatanModels.getLongitude());
+            tv_jarak.setText("Est. " + tempatKesehatanModels.getDistance() + " km dari anda");
 
             cv_kesehatan.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,13 +122,13 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
 
     }
 
-    @NonNull
-    private String calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
-        float[] results = new float[1];
-        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-        String formattedValue = String.format("%.1f", (results[0] / 1000));
-        return formattedValue;
-    }
+//    @NonNull
+//    private String calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
+//        float[] results = new float[1];
+//        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
+//        String formattedValue = String.format("%.1f", (results[0] / 1000));
+//        return formattedValue;
+//    }
 
     private Runnable runnable = new Runnable() {
         @Override

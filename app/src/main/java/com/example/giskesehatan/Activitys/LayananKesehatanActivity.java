@@ -27,6 +27,8 @@ import com.example.giskesehatan.Models.TempatKesehatanModel;
 import com.example.giskesehatan.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -178,6 +180,13 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                             rv_layanan_kesehatan.setVisibility(View.GONE);
                             layout_empty.setVisibility(View.VISIBLE);
                         }
+                        Collections.sort(tempatKesehatanModels, new Comparator<TempatKesehatanModel>() {
+                            @Override
+                            public int compare(TempatKesehatanModel data1, TempatKesehatanModel data2) {
+                                return Double.compare(data1.getDistance(), data2.getDistance());
+                            }
+                        });
+
                         tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this,
                                 tempatKesehatanModels,
                                 null,
