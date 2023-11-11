@@ -104,10 +104,6 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
             tv_judul.setText(tempatKesehatanModels.getNama());
             tv_deskripsi.setText(tempatKesehatanModels.getDeskripsi());
 
-//            String jarak = calculateDistance(gpsTracker.getLatitude()
-//                    , gpsTracker.getLongitude()
-//                    , tempatKesehatanModels.getLatitude()
-//                    , tempatKesehatanModels.getLongitude());
             tv_jarak.setText("Est. " + tempatKesehatanModels.getDistance() + " km dari anda");
 
             cv_kesehatan.setOnClickListener(new View.OnClickListener() {
@@ -121,14 +117,6 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
         }
 
     }
-
-//    @NonNull
-//    private String calculateDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
-//        float[] results = new float[1];
-//        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-//        String formattedValue = String.format("%.1f", (results[0] / 1000));
-//        return formattedValue;
-//    }
 
     private Runnable runnable = new Runnable() {
         @Override

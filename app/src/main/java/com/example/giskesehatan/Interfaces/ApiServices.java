@@ -58,12 +58,4 @@ public interface ApiServices {
     Call<ApiResponseWheater> getWheater(@Header("X-RapidAPI-Key") String key,
                                         @Header("X-RapidAPI-Host") String host,
                                         @Query("q") String q);
-
-//    @Multipart
-//    @POST("uploadimage")
-//    Call<ApiResponse> uploadImage(
-//            @Header("Authorization") String bearerToken, // Header "Authorization" dengan token bearer
-//            @Part MultipartBody.Part image,
-//            @Part("id_user_detail") RequestBody id_user_detail
-//    );
 }
