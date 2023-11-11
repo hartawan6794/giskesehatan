@@ -59,6 +59,7 @@ public class LayananKesehatanActivity extends AppCompatActivity {
     //init search component
     private SearchView sv_tempat_kesehatan;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,19 +161,6 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                     ApiResponse<List<TempatKesehatanModel>> apiResponse = response.body();
                     if (apiResponse.isStatus()) {
                         List<TempatKesehatanModel> tempatKesehatanModels = apiResponse.getResult();
-//                        List<TempatKesehatanModel> filterModel = new ArrayList<>();
-//                        for (TempatKesehatanModel tempatKesehatanModel1 : tempatKesehatanModels) {
-//                            if (calculateDistanceUser(gpsTracker.getLatitude(),
-//                                    gpsTracker.getLongitude(),
-//                                    tempatKesehatanModel1.getLatitude(),
-//                                    tempatKesehatanModel1.getLongitude())) {
-//                                filterModel.add(tempatKesehatanModel1);
-//                            }
-//                            Log.d(TAG, "calculate: "+calculateDistanceUser(gpsTracker.getLatitude(),
-//                                    gpsTracker.getLongitude(),
-//                                    tempatKesehatanModel1.getLatitude(),
-//                                    tempatKesehatanModel1.getLongitude()));
-//                        }
                         if (!tempatKesehatanModels.isEmpty()) {
                             rv_layanan_kesehatan.setVisibility(View.VISIBLE);
                             layout_empty.setVisibility(View.GONE);
@@ -249,17 +237,6 @@ public class LayananKesehatanActivity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         super.onBackPressed();
-    }
-
-    private boolean calculateDistanceUser(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
-        float[] results = new float[1];
-        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-        if (results[0] <= 2000) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
 }
