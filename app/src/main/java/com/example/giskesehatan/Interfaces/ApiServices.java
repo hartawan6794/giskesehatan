@@ -7,7 +7,6 @@ import com.example.giskesehatan.Models.CombineUserModel;
 import com.example.giskesehatan.Models.RoutesResponseModel;
 import com.example.giskesehatan.Models.SharedPreferenceModel;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
-import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.Models.UserDetailModel;
 import com.example.giskesehatan.Models.UserModel;
 

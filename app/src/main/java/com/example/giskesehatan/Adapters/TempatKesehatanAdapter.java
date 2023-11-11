@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -21,7 +19,6 @@ import com.example.giskesehatan.Activitys.DetailLayananKesehatanActivity;
 import com.example.giskesehatan.Helpers.AppConfig;
 import com.example.giskesehatan.Helpers.GPSTracker;
 import com.example.giskesehatan.Models.TempatKesehatanModel;
-import com.example.giskesehatan.Models.TempatKesehatanTerkiniModel;
 import com.example.giskesehatan.R;
 import com.makeramen.roundedimageview.RoundedImageView;
 
