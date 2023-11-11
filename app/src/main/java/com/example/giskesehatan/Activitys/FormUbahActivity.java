@@ -4,7 +4,6 @@ import android.Manifest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -88,11 +87,6 @@ public class FormUbahActivity extends AppCompatActivity {
         sharedPreference = new SharedPreference(this);
         initComponents();
 
-        cv_img_user.setOnClickListener(v -> choicePhoto());
-        iv_back.setOnClickListener(v -> onBackPressed());
-        iv_simpan.setOnClickListener(v -> kirimKeServer());
-        ed_tgl_lahir.setOnClickListener(v -> showDatePickerDialog());
-
         MyApiApplication myApiApplication = (MyApiApplication) getApplication();
         apiServices = myApiApplication.getApiService();
 
@@ -129,13 +123,28 @@ public class FormUbahActivity extends AppCompatActivity {
                     .centerCrop()
                     .into(cv_img_user);
         }
+        cv_img_user.setOnClickListener(v -> choicePhoto());
+        iv_back.setOnClickListener(v -> onBackPressed());
+        iv_simpan.setOnClickListener(v -> kirimKeServer());
+        ed_tgl_lahir.setOnClickListener(v -> showDatePickerDialog(string_tanggal_lahir));
     }
 
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(String tanggal) {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = 0;
+        int month = 0;
+        int day = 0;
+
+        if(tanggal.equals("0000-00-00") || tanggal.isEmpty() || tanggal.equals("Belum di set")){
+             year = calendar.get(Calendar.YEAR);
+             month = calendar.get(Calendar.MONTH);
+             day = calendar.get(Calendar.DAY_OF_MONTH);
+        }else{
+            String[] parts = tanggal.split("-");
+            year = Integer.parseInt(parts[0]);
+            month = Integer.parseInt(parts[1]) - 1;
+            day = Integer.parseInt(parts[2]);
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 android.R.style.Theme_Holo_Dialog,
@@ -146,6 +155,16 @@ public class FormUbahActivity extends AppCompatActivity {
                         ed_tgl_lahir.setText(AppConfig.dateIndonesia(string_tanggal_lahir));
                     }
                 }, year, month, day);
+
+        // Set nilai minimum dan maksimum untuk tanggal yang dapat dipilih
+        Calendar minDate = Calendar.getInstance();
+        minDate.set(1945, Calendar.JANUARY, 1);
+
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.set(maxDate.get(Calendar.YEAR), maxDate.get(Calendar.MONTH),maxDate.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
 
         datePickerDialog.show();
     }
@@ -182,7 +201,7 @@ public class FormUbahActivity extends AppCompatActivity {
     }
 
     private void uploadToServer() {
-        String bearerToken = AppConfig.keyToken(sharedPreference.readSetting("token")); // Ganti dengan token bearer yang sesuai
+        String bearerToken           = AppConfig.keyToken(sharedPreference.readSetting("token")); // Ganti dengan token bearer yang sesuai
         String string_id_user_detail = sharedPreference.readSetting("id_user");
 
         string_nama_lengkap     = ed_nm_lengkap.getText().toString();
@@ -223,6 +242,7 @@ public class FormUbahActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             Boolean status = response.getBoolean("success");
+                            progressDialog.dismiss();
                             if (status) {
                                 Toast.makeText(FormUbahActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(FormUbahActivity.this,ProfileActivity.class);
@@ -279,9 +299,11 @@ public class FormUbahActivity extends AppCompatActivity {
                 imageFile = getFileFromUri(data.getData());
                 Log.d(TAG, "file: " + imageFile);
                 gambar = getFileName(selectedImageUri);
-                Glide.with(this).load(selectedImageUri).fitCenter().placeholder(R.drawable.girl).into(cv_img_user);
-
-
+                Glide.with(this)
+                        .load(selectedImageUri)
+                        .fitCenter()
+                        .placeholder(R.drawable.girl)
+                        .into(cv_img_user);
             }
         }
     }

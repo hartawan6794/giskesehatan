@@ -3,15 +3,19 @@ package com.example.giskesehatan.Activitys;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.giskesehatan.Helpers.GPSTracker;
 import com.example.giskesehatan.Interfaces.ApiServices;
@@ -26,7 +30,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,13 +41,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,6 +56,9 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
         GoogleMap.OnMapClickListener, LocationListener, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "TujuanActivity";
 
+    //init location teks
+    private AppCompatImageView iv_back, btn_call, btn_call_wa;
+    private AppCompatTextView tv_destination_location, tv_current_location, tv_est_duration;
     //init google map
     private GoogleMap mMap;
     GoogleApiClient googleApiClient;
@@ -70,11 +73,55 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
 
         Intent intent = getIntent();
         tempatKesehatanModel = (TempatKesehatanModel) intent.getSerializableExtra("model");
+
         gpsTracker = new GPSTracker(this);
+
+        initComponents();
+
+        btn_call_wa.setOnClickListener(v -> callWa());
+        btn_call.setOnClickListener(v -> caller());
+        iv_back.setOnClickListener(V -> onBackPressed());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void caller() {
+        if(checkPhonePermission()){
+            String dial = "tel:" + tempatKesehatanModel.getNotelp();
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        }else {
+            checkPhonePermission();
+        }
+    }
+
+    private void callWa() {
+        if (tempatKesehatanModel.getNotelp().length() < 11) {
+            Toast.makeText(this, "Nomor wa ini belum diset", Toast.LENGTH_SHORT).show();
+        } else {
+            sendMessageWhatsApp(tempatKesehatanModel.getNotelp());
+        }
+    }
+
+
+    private void sendMessageWhatsApp(@NonNull String notelp) {
+        String formatPhoneNumber = "+62" + notelp.substring(1);
+        startActivity(
+                new Intent(Intent.ACTION_VIEW, Uri.parse(
+                        String.format("https://api.whatsapp.com/send?phone=%s", formatPhoneNumber)
+                )
+                )
+        );
+    }
+    private void initComponents() {
+        iv_back                     = findViewById(R.id.iv_back);
+        tv_current_location         = findViewById(R.id.tv_current_location);
+        tv_destination_location     = findViewById(R.id.tv_destination_location);
+        tv_est_duration             = findViewById(R.id.tv_est_duration);
+        btn_call                    = findViewById(R.id.btn_call);
+        btn_call_wa                 = findViewById(R.id.btn_call_wa);
+        tv_destination_location.setText(tempatKesehatanModel.getNama());
     }
 
     @Override
@@ -89,9 +136,7 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
         builder.include(destination);
         LatLngBounds bounds = builder.build();
         int padding = 100; // Padding around the bounds in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-//        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude)).zoom(13).build();
-
+//        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
 
         //Memulai Google Play Services
@@ -112,15 +157,6 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                 .title(tempatKesehatanModel.getNama())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin)));
 
-        // Geser peta ke lokasi yang diklik
-//        mMap.animateCamera(CameraUpdateFactory.newLatLng(de));
-//        Polyline line = mMap.addPolyline(new PolylineOptions()
-//                .add(new LatLng(currentLocation.latitude, currentLocation.longitude), new LatLng(destination.latitude, destination.longitude))
-//                .width(25)
-//                .color(Color.GREEN)
-//                .geodesic(true));
-
-//        mMap.addPolyline(line);
         getRoutes(currentLocation, destination, googleMap);
 
         googleMap.setOnMapClickListener(this);
@@ -165,23 +201,13 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    public void getRoutes(LatLng currentLocation, LatLng destination, GoogleMap googleMap) {
+    public void getRoutes(@NonNull LatLng currentLocation, LatLng destination, GoogleMap googleMap) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         httpClient.addInterceptor(loggingInterceptor); // Tambahkan interceptor logging ke HttpClient
-//        httpClient.addInterceptor(new Interceptor() {
-//            @Override
-//            public okhttp3.Response intercept(Chain chain) throws IOException {
-//                Request originalRequest = chain.request();
-//                Request newRequest = originalRequest.newBuilder()
-//                        .header("Referer", "http://hanazumaedzaulfa.com/") // Atur referer sesuai dengan situs web atau aplikasi Anda
-//                        .build();
-//                return chain.proceed(newRequest);
-//            }
-//        });
         String origin = currentLocation.latitude + "," + currentLocation.longitude;
         String desti = destination.latitude + "," + destination.longitude;
 
@@ -201,30 +227,33 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
                 int totalDuration = 0;
                 Log.d(TAG, "routeResponse: " + response.body());
                 List<Route> routes = routeResponse.getRoutes();
-                for (Route route : routes){
+                for (Route route : routes) {
                     List<Leg> legs = route.getLegs();
-                    for (Leg leg : legs){
+                    for (Leg leg : legs) {
                         double segmentDistance = leg.getDistance().getValue();
                         int segmentDuration = leg.getDuration().getValue();
 
                         totalDistance += segmentDistance;
                         totalDuration += segmentDuration;
                         List<Step> steps = leg.getSteps();
-                        for(Step step: steps){
+                        for (Step step : steps) {
                             decodedPolyline.addAll(decodePoly(step.getPolyline().getPoints()));
 
                         }
                     }
                 }
 
-                Log.d(TAG, "totalDistance: "+(totalDistance/1000));
-                Log.d(TAG, "totalDuration: "+(totalDuration/60));
-//                Log.d(TAG, "onResponse: "+decodedPolyline);
+                String est = "Est. Waktu "+(totalDuration / 60)+" Menit";
+                String estJarak = "Est. Jarak "+(totalDistance / 1000)+" Km";
+
+                tv_est_duration.setText(est);
+
                 PolylineOptions polylineOptions = new PolylineOptions()
                         .addAll(decodedPolyline)
-                        .width(10) // Lebar jalur
-                        .color(getResources().getColor(R.color.primay)); // Warna jalur
-                Polyline polyline =googleMap.addPolyline(polylineOptions);
+                        .width(20) // Lebar jalur
+                        .color(getResources().getColor(R.color.primay))
+                        .geodesic(true); // Warna jalur
+                Polyline polyline = googleMap.addPolyline(polylineOptions);
 
             }
 
@@ -234,6 +263,29 @@ public class TujuanActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         });
 
+    }
+
+    //mendapatkan permission request call phone
+    public static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 98;
+
+    public boolean checkPhonePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.CALL_PHONE)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            }
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private List<LatLng> decodePoly(String encoded) {

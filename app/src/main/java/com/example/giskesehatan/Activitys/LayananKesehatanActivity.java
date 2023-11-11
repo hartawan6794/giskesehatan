@@ -85,7 +85,8 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                 TempatKesehatanModel tempatKesehatanModel = new TempatKesehatanModel();
                 tempatKesehatanModel.setTabel(string_table);
                 tempatKesehatanModel.setNama(query);
-                Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.search(AppConfig.keyToken(token), tempatKesehatanModel);
+                Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.search(AppConfig.keyToken(token),
+                        tempatKesehatanModel);
                 call.enqueue(new Callback<ApiResponse<List<TempatKesehatanModel>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<TempatKesehatanModel>>> call, Response<ApiResponse<List<TempatKesehatanModel>>> response) {
@@ -94,7 +95,7 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                             ApiResponse<List<TempatKesehatanModel>> apiResponse = response.body();
                             if (apiResponse.isStatus()) {
                                 List<TempatKesehatanModel> tempatKesehatanModels = apiResponse.getResult();
-                                if (tempatKesehatanModels.size() > 0) {
+                                if (!tempatKesehatanModels.isEmpty()) {
                                     rv_layanan_kesehatan.setVisibility(View.VISIBLE);
                                     layout_empty.setVisibility(View.GONE);
                                 } else {
@@ -125,7 +126,6 @@ public class LayananKesehatanActivity extends AppCompatActivity {
 
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Handle text change (e.g., filter results as the user types)
@@ -145,7 +145,10 @@ public class LayananKesehatanActivity extends AppCompatActivity {
 
         TempatKesehatanModel tempatKesehatanModel = new TempatKesehatanModel();
         tempatKesehatanModel.setTabel(table);
-        Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.getlayanan(AppConfig.keyToken(token), tempatKesehatanModel);
+        tempatKesehatanModel.setLatitude(gpsTracker.getLatitude());
+        tempatKesehatanModel.setLongitude(gpsTracker.getLongitude());
+        Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.getlayanan(AppConfig.keyToken(token),
+                tempatKesehatanModel);
         call.enqueue(new Callback<ApiResponse<List<TempatKesehatanModel>>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -155,23 +158,30 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                     ApiResponse<List<TempatKesehatanModel>> apiResponse = response.body();
                     if (apiResponse.isStatus()) {
                         List<TempatKesehatanModel> tempatKesehatanModels = apiResponse.getResult();
-                        List<TempatKesehatanModel> filterModel = new ArrayList<>();
-                        for (TempatKesehatanModel tempatKesehatanModel1 : tempatKesehatanModels) {
-                            if (calculateDistanceUser(gpsTracker.getLatitude(),
-                                    gpsTracker.getLongitude(),
-                                    tempatKesehatanModel1.getLatitude(),
-                                    tempatKesehatanModel1.getLongitude())) {
-                                filterModel.add(tempatKesehatanModel1);
-                            }
-                        }
-                        if (tempatKesehatanModels.size() > 1) {
+//                        List<TempatKesehatanModel> filterModel = new ArrayList<>();
+//                        for (TempatKesehatanModel tempatKesehatanModel1 : tempatKesehatanModels) {
+//                            if (calculateDistanceUser(gpsTracker.getLatitude(),
+//                                    gpsTracker.getLongitude(),
+//                                    tempatKesehatanModel1.getLatitude(),
+//                                    tempatKesehatanModel1.getLongitude())) {
+//                                filterModel.add(tempatKesehatanModel1);
+//                            }
+//                            Log.d(TAG, "calculate: "+calculateDistanceUser(gpsTracker.getLatitude(),
+//                                    gpsTracker.getLongitude(),
+//                                    tempatKesehatanModel1.getLatitude(),
+//                                    tempatKesehatanModel1.getLongitude()));
+//                        }
+                        if (!tempatKesehatanModels.isEmpty()) {
                             rv_layanan_kesehatan.setVisibility(View.VISIBLE);
                             layout_empty.setVisibility(View.GONE);
                         } else {
                             rv_layanan_kesehatan.setVisibility(View.GONE);
                             layout_empty.setVisibility(View.VISIBLE);
                         }
-                        tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this, filterModel, null,2);
+                        tempatKesehatanAdapter = new TempatKesehatanAdapter(LayananKesehatanActivity.this,
+                                tempatKesehatanModels,
+                                null,
+                                2);
                         rv_layanan_kesehatan.setAdapter(tempatKesehatanAdapter);
                         tempatKesehatanAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Message: " + apiResponse.getMessage());
@@ -192,15 +202,17 @@ public class LayananKesehatanActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
-        gpsTracker = new GPSTracker(this);
-        tv_title = findViewById(R.id.tv_title);
-        sv_tempat_kesehatan = findViewById(R.id.sv_tempat_kesehatan);
-        iv_back = findViewById(R.id.iv_back);
-        rv_layanan_kesehatan = findViewById(R.id.rv_layanan_kesehatan);
-        layout_empty = findViewById(R.id.layout_empty);
-        sharedPreference = new SharedPreference(this);
-        progressDialog = new ProgressDialog(this);
+        gpsTracker              = new GPSTracker(this);
+        tv_title                = findViewById(R.id.tv_title);
+        sv_tempat_kesehatan     = findViewById(R.id.sv_tempat_kesehatan);
+        iv_back                 = findViewById(R.id.iv_back);
+        rv_layanan_kesehatan    = findViewById(R.id.rv_layanan_kesehatan);
+        layout_empty            = findViewById(R.id.layout_empty);
+        sharedPreference        = new SharedPreference(this);
+        progressDialog          = new ProgressDialog(this);
+
         rv_layanan_kesehatan.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
         MyApiApplication myApiApplication = (MyApiApplication) getApplication();
         apiServices = myApiApplication.getApiService();
         sv_tempat_kesehatan.setQueryHint("Cari. . .");

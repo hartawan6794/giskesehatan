@@ -35,7 +35,7 @@ public class TempatKesehatanAdapter extends RecyclerView.Adapter<TempatKesehatan
     public TempatKesehatanAdapter(Context context, List<TempatKesehatanModel> tempatKesehatanModels,ViewPager2 viewPager2 , int VIEW_TYPE) {
         this.context                = context;
         this.tempatKesehatanModels  = tempatKesehatanModels;
-        this.viewPager2 = viewPager2;
+        this.viewPager2             = viewPager2;
         this.gpsTracker             = new GPSTracker(context);
         this.VIEW_TYPE              = VIEW_TYPE;
     }
