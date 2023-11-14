@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
+    public static ProfileActivity instance; // Static reference to the ProfileActivity instance
 
     private static final String TAG = "ProfileActivity";
     private SharedPreference sharedPreference;
@@ -62,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        instance = this; // Set the static reference to this instance
         sharedPreference = new SharedPreference(this);
         MyApiApplication myApiApplication = (MyApiApplication) getApplication();
         apiServices = myApiApplication.getApiService();
@@ -221,5 +223,11 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         getdata(sharedPreference.readSetting("token"),sharedPreference.readSetting("id_user"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null; // Clear the static reference when the activity is destroyed
     }
 }

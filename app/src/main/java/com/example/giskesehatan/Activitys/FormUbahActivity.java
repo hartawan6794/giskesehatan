@@ -247,7 +247,10 @@ public class FormUbahActivity extends AppCompatActivity {
                                 Toast.makeText(FormUbahActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(FormUbahActivity.this,ProfileActivity.class);
                                 startActivity(intent);
-                                finish();
+                                finish();// Also, explicitly finish the "Profile" activity
+                                if (ProfileActivity.instance != null) {
+                                    ProfileActivity.instance.finish();
+                                }
                                 overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                             }else{
                                 Toast.makeText(FormUbahActivity.this, response.getString("message"), Toast.LENGTH_SHORT).show();
