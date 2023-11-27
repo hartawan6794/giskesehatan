@@ -12,6 +12,7 @@ public class AppConfig {
     public final static String BASE_URL = "http://cmsgis.hanazumaedzaulfa.com/public/api/";
     public final static String BASE_URL_IMG_USER = "http://cmsgis.hanazumaedzaulfa.com/public/img/user/";
     public final static String BASE_URL_IMG = "http://cmsgis.hanazumaedzaulfa.com/public/img/";
+    public final static String BEARER_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJHaXNLZXNlaGF0YW4iLCJhdWQiOiJHaXNLZXNlaGF0YW4iLCJzdWIiOiJHaXNLZXNlaGF0YW4iLCJpYXQiOjE2OTc0MjU1MzUsImRhdGEiOnsiZW1haWxfdXNlciI6Imtlc2VoYXRhbkBrZXNlaGF0YW4uY29tIiwidXNlcm5hbWUiOiJrZXNlaGF0YW4ifX0.8h-U2ALZ8L6yI9nCVAE4L6EzLhPZ19bM8c8bZ83WMto";
 
     public static boolean isEmailValid(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";

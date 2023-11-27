@@ -69,18 +69,18 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         initComponents();
 
-        if (sharedPreference.readSetting("id_user").isEmpty()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        }
+//        if (sharedPreference.readSetting("id_user").isEmpty()) {
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//        }
 
-        setValueProfile();
-        tv_profile.setOnClickListener(v -> profile());
+//        setValueProfile();
+//        tv_profile.setOnClickListener(v -> profile());
 
         getDataTerkini();
-        getWheater();
+//        getWheater();
         cv_rs.setOnClickListener(this);
         cv_klinik.setOnClickListener(this);
         cv_puskesmas.setOnClickListener(this);
@@ -126,8 +126,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         progressDialog.setMessage("Mohon tungu. . .");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        String token = sharedPreference.readSetting("token");
-
+//        String token = sharedPreference.readSetting("token");
+        String token = AppConfig.BEARER_TOKEN;
         TempatKesehatanModel tempatKesehatanModel = new TempatKesehatanModel();
         tempatKesehatanModel.setLatitude(gpsTracker.getLatitude());
         tempatKesehatanModel.setLongitude(gpsTracker.getLongitude());

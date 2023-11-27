@@ -73,7 +73,8 @@ public class LayananKesehatanActivity extends AppCompatActivity {
         }
 
         iv_back.setOnClickListener(v -> onBackPressed());
-        String token = sharedPreference.readSetting("token");
+//        String token = sharedPreference.readSetting("token");
+        String token = AppConfig.BEARER_TOKEN;
         string_table = getTable(extras.getString("title"));
 
         getData(token, string_table);
@@ -87,6 +88,8 @@ public class LayananKesehatanActivity extends AppCompatActivity {
                 progressDialog.show();
                 TempatKesehatanModel tempatKesehatanModel = new TempatKesehatanModel();
                 tempatKesehatanModel.setTabel(string_table);
+                tempatKesehatanModel.setLatitude(gpsTracker.getLatitude());
+                tempatKesehatanModel.setLongitude(gpsTracker.getLongitude());
                 tempatKesehatanModel.setNama(query);
                 Call<ApiResponse<List<TempatKesehatanModel>>> call = apiServices.search(AppConfig.keyToken(token),
                         tempatKesehatanModel);
